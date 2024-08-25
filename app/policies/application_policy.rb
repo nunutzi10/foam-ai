@@ -52,6 +52,12 @@ class ApplicationPolicy
     user.is_a? ApiKey
   end
 
+  # user is [User]
+  # @return [Boolean]
+  def user?
+    user.is_a? User
+  end
+
   # Base pundit scope
   class Scope
     attr_reader :context, :user, :scope, :http_params
@@ -64,10 +70,13 @@ class ApplicationPolicy
     end
 
     def resolve
-      if user.is_a?(Admin)
+      case user
+      when Admin
         admin_scope
-      elsif user.is_a?(ApiKey)
+      when ApiKey
         api_key_scope
+      when User
+        user_scope
       else
         scope
       end
@@ -101,6 +110,28 @@ class ApplicationPolicy
       end
 
       tenant_scope tenant, result
+    end
+
+    # Base scope for user resource
+    # Overrides on policies if necessary
+    # Filters all records for the associated tenant
+    # If a model has a direct relation to tenant a where clause is added
+    #   Otherwise a filter_by_tenant scope must be implemented on the model
+    # It also applies a global filter_by_date scope if the model respond_to it
+    # @return [ActiveRecord::Relation]
+    def user_scope
+      tenant = user.tenant
+      result = scope
+      if result.respond_to?(:filter_by_date)
+        result = result.filter_by_date(http_params[:start_date],
+                                       http_params[:end_date])
+      end
+
+      if result.respond_to?(:filter_by_tenant)
+        result.filter_by_tenant(tenant)
+      else
+        result.where(tenant:)
+      end
     end
 
     # Filters all records for the associated tenant

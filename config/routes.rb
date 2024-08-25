@@ -18,6 +18,14 @@ Rails.application.routes.draw do
     }
     # [Admin] routes
     resources :admins, only: %i[index create show update destroy]
+    # [User] devise routes
+    mount_devise_token_auth_for 'User', at: 'users', controllers: {
+      sessions: 'overrides/sessions',
+      passwords: 'overrides/passwords',
+      token_validations: 'overrides/tokens'
+    }, skip: [:omniauth_callbacks]
+    # [User] routes
+    resources :users, only: %i[index create show update destroy]
     # [Tenant] routes
     resources :tenants, only: %i[index show update]
     # [ApiKey] routes

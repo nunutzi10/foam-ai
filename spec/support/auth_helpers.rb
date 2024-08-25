@@ -9,7 +9,7 @@ module Requests
       # @return nil
       def sign_in(object)
         let(:auth_helpers_auth_token) do
-          if object == :admin
+          if %i[admin user].include?(object)
             lifespan_seconds = DeviseTokenAuth.token_lifespan.to_i
             token_extras = { lifespan_seconds: }
             token = public_send(object).create_token(**token_extras)

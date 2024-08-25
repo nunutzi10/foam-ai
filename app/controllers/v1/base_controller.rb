@@ -27,7 +27,7 @@ module V1
     # or nil if no user is authenticated.
     def pundit_user
       {
-        user: current_admin_or_api_key,
+        user: current_admin_or_api_key || current_v1_user,
         http_params: params
       }
     end
