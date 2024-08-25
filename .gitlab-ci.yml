@@ -1,0 +1,52 @@
+image: ruby:3.1.2
+
+stages:
+  - test
+
+services:
+  - ankane/pgvector:v0.4.4
+
+#db variables
+variables:
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: secret
+
+before_script:
+  - export RAILS_ENV=test
+  - gem install bundler -v 2.3.7
+  - bundle install --path=/cache/bundle --without stage development
+
+rspec:
+  stage: test
+  script:
+    - echo -e "$MASTER_KEY" > config/master.key
+    - apt-get update
+    - apt-get install -y postgresql-client
+    - apt-get install -y poppler-utils unrtf catdoc tesseract-ocr
+    # wget and gnupg2 for Google Chrome installation
+    - apt-get install -y wget gnupg2
+    # add Google Chrome to sources list
+    - wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
+    - echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' > /etc/apt/sources.list.d/google-chrome.list
+    - apt-get update
+    # install Google Chrome
+    - apt-get install -y google-chrome-stable
+    - ln -s /usr/bin/catdoc /usr/local/bin/catdoc
+    - ln -s /usr/bin/catppt /usr/local/bin/catppt
+    - ln -s /usr/bin/pdftotext /usr/local/bin/pdftotext
+    - ln -s /usr/bin/unrtf /usr/local/bin/unrtf
+    - ln -s /usr/bin/tesseract /usr/local/bin/tesseract
+    - ln -s /usr/bin/xls2csv /usr/local/bin/xls2csv
+    - bundle install --path=/cache/bundle
+    - bundle exec rake parallel:setup
+    - bundle exec rake parallel:spec
+  artifacts:
+    paths:
+      - coverage/
+
+lint:
+  stage: test
+  allow_failure: true
+  script:
+    - bundle install --path=/cache/bundle
+    - bundle exec rubocop

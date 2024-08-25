@@ -1,0 +1,8 @@
+:queues:
+  - default
+
+:limits:
+  default: 10
+
+:process_limits:
+  default: 10

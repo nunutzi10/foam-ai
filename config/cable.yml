@@ -1,0 +1,17 @@
+development:
+  adapter: redis
+  url: <%= ENV.fetch("SIDEKIQ_REDIS") { "redis://localhost:6379/1" } %>
+  channel_prefix: api_development
+
+test:
+  adapter: test
+
+stage:
+  adapter: redis
+  url: <%= ENV.fetch("SIDEKIQ_REDIS") { "redis://localhost:6379/1" } %>
+  channel_prefix: api_stage
+
+production:
+  adapter: redis
+  url: <%= ENV.fetch("SIDEKIQ_REDIS") { "redis://localhost:6379/1" } %>
+  channel_prefix: api_production
