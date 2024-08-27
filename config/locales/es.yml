@@ -1,0 +1,295 @@
+es:
+  errors:
+    no_billing_cycle: 'No se encontró un ciclo de facturación activo'
+    max_ai_context_limit_reached: 'Se alcanzó el límite de Contextos de AI (%{limit})'
+    max_completions_per_cycle_limit_reached: 'Se alcanzó el límite de Consultas (%{limit})'
+    invalid_ai_model: 'Modelo de AI inválido o no disponible en su plan'
+    google_drive_not_enabled: 'Google Drive no está habilitado en su plan'
+  mailers:
+    payment:
+      receipt:
+        subject: 'Utoppia | Recibo de Pago'
+      failed:
+        subject: 'Utoppia | Pago Fallido'
+  models:
+    embedding:
+      scrapper_prompt:
+        instructions:
+          - '###Instruction###'
+          - 'Take a deep breath, review this instructions in full detail.'
+          - 'You are an expert website scrapper that can extract information from any website.'
+          - 'I will provide the full HTML website content, create a full text with only the contents of the website, discard the links, images or javascript.'
+          - 'Produce an organized information in document text format.'
+          - 'If you find a section of a list of items, parse it as a title and the list of elements.'
+          - "Don't be lazy, Create a full text and don't omit any important information.  I WILL GIVE YOU A $200 TIP FOR A BETTER SOLUTION."
+          - 'You must organize the information in a way that it can be easily understood by a human.'
+          - 'Also, extract all the internal deeplinks of the website so they can be scrapped as well.'
+          - 'The deeplinks must be local and relative to the website, do not include external links or hashtag links, they must link to a relative new section to scrap.'
+          - 'Ignore deeplinks to the index page as it is probable that a root url is provided as the first page, also ignore deeplinks to the same page you are working on.'
+          - 'Produce only relative deeplinks, do not include the full URL, just the path with the "/" at the beginning. Example: "/about.html"'
+          - 'I will provide the current URL for context and the content of the website.'
+          - 'You must consider your maximum output length of 3900 tokens, only if the content is larger than that summarize it so you can always produce a valid JSON response.'
+          - 'IMPORTANT: Only create a valid single line JSON response so it can be parsed. Do not use markdown like "```json" and make sure it is a valid, parsable JSON in this format:'
+          - '{ "content": "<the output of your scrapping>", "deeplinks": ["about.html", "/contact"] }'
+          - '###Example###'
+          - 'Current URL: https://www.example.com'
+          - '###HTML Content###'
+          - '<html>'
+          - '  <head>'
+          - '    <title>Example</title>'
+          - '  ...'
+    completion:
+      misunderstood:
+        title: 'Complemento Misunderstood %{date}'
+        instructions:
+          - 'The following responses were complemented by the user as they were previously rejected.'
+          - 'Review the responses and provide a better completion.'
+          - 'Consider the date that the responses were complemented so you have the latest information.'
+      system_prompt:
+        instructions:
+          - Take a deep breath, review this instructions in full detail.
+          - Create a response in the language of the user inquiry based on the provided "INFORMATION".
+          - Do not mention the "INFORMATION" block in your response, the block is for you to use as a reference to find the answer.
+          - Do not end the completion with a question for the user.
+          - Do not misguide the user to contact any other source of information, website, phone, etc unless it is explicitly contained in the "INFORMATION" block.
+          - Do not mention, recommend or suggest to contact "SUPPORT" or "CUSTOMER SUPPORT" in any of your responses
+          - If the "INFORMATION" does not mention the answer, is incomplete, or you are not sure about the answer, return "null" as the response.
+          - Use a friendly tone to explain to the user to sound less robotic, use emojis to produce better outcomes.
+        information_start: 'INFORMATION:'
+        information_end: 'INFORMATION END'
+        skip_embeddings:
+          - 'You are a helpful assistant'
+      regenerate_prompt:
+        instructions:
+          - 'IMPORTANT: You previously generated a response that was rejected by the user.'
+          - 'Take a deep breath and create a different response to satisfy the user.'
+          - 'I will give you a $200 TIP for a better solution.'
+        rejected_response: 'Rejected Response: %{response}'
+      user_prompt: "ADDITIONAL INSTRUCTIONS: %{user_instructions}\nUSER PROMPT: %{prompt}"
+      browse_the_web_prompt:
+        - '###Instruction###'
+        - 'The user has requested to perform a web search to complement the base prompt.'
+        - 'I will provide you with the list of the search results as HTML pages, title and URL.'
+        - 'Use this information to complement your response.'
+        - 'Use the same language as the user query.'
+        - 'If the user asks for a comparison, use both the "INFORMATION BLOCK" and the "Browse the Web results". I WILL GIVE YOU A $200 TIP FOR A BETTER SOLUTION.'
+    billing_cycle:
+      payment_description: 'Utoppia Suscripción %{plan_name}'
+      custom_plan: 'Corporativo'
+    search_result:
+      irrelevant_result: 'El resultado del sitio web no es relevante para la consulta del usuario'
+      scrapper_api_invalid_result: 'El resultado obtenido de Scrapper API no es relevante para la consulta.'
+      validate_content_prompt:
+        - '###Instruction###'
+        - 'Take a deep breath, review this instructions in full detail.'
+        - 'I will provide the content of a scrapped HTML website containing its "Meta Tags" and "Content"'
+        - 'I will also provide the user search query so you can determine if the "Meta Tags" and "Content" are relevant'
+        - 'You will determine if the content scrapped is a valid page or it is invalid. Reasons to invalidate a page:'
+        - '- 404 or error page'
+        - '- empty login page, paywall or authwall without any content: No content related to the search query found and only a wall is present.'
+        - '- cloudflare/cdn blocked page'
+        - '- captcha protected website'
+        - 'IMPORTANT: Analyze the search query, sometimes the information is relevant even if login is encouraged. I will give you a $200 TIP'
+        - 'To differentiate a valid page from a login page:'
+        - '- A valid profile page typically contains information some related to the search query like matching meta data and extra information.'
+        - "- An invalid login page or authwall will only contain login fields, sign-up prompts, and terms of service links without any information related to the search query. Sometimes pages encourage to signup or create a subscription, the important thing is to analyze its relevancy. It doesn't matter if the information is incomplete or encourages to create an account to access the full content, if some of the content is relevant, then it should be valid."
+        - 'IMPORTANT: Only create a valid JSON response. Do not use markdown and make sure it is a valid JSON in this format:'
+        - '{'
+        - '  "valid": true, # true if the content is valid, false if it is invalid'
+        - '}'
+  services:
+    browse_the_web:
+      search_term:
+        prompt:
+          - '###Instruction###'
+          - 'Take a deep breath, review this instructions in full detail.'
+          - 'You are an expert web researcher, the user will provide the topic or inquiry and you must produce a search term or phrase that will be used to find the information using a Google Custom Search API.'
+          - 'For context, I will provide the last messages between the user and the assistant (which will be truncated) so you can determine the best search term or phrase for the context of the conversation.'
+          - '- IMPORTANT: You must use the same language as the user query to create the search term. I WILL GIVE YOU AN EXTRA $200 TIP.'
+        context:
+          - 'I will provide the context of the user inquiry to produce a better search query.'
+          - 'The context contains the information about the product, service or company that the user is asking about to create a web search for.'
+          - 'That means that if the user is asking a comparison, understand the product category and criteria.'
+        format:
+          - '- IMPORTANT: you must not use the word "comparison" in the search term. I WILL GIVE YOU A $200 TIP.'
+          - '- If the user asks for a comparison, such as general price comparison, use the "Context" block to determine the "product category" search with the desired criteria. Example: "Compare prices with my competitors", produces "<PRODUCT CATEGORY> pricing". I WILL GIVE YOU A $200 TIP IF YOU IDENTIFY THE "PRODUCT CATEGORY".'
+          - '- If the user asks for a specific comparison criteria of a competitor such as prices, use the name of the competitor in the search term and the comparison criteria to access the first result. For example: "Compare prices with Competitor X", produce "Competitor X Pricing" as a search_term.'
+          - '- If the user asks for a website comparison with a competitor, just use the competitor name as the search term.'
+          - 'IMPORTANT: Create a JSON response with the following structure:'
+          - '{'
+          - '  "search_term": "search_term", # The search term or phrase to be used in a search engine in the language of the user query'
+          - '}'
+    completion_response_fetch_metadata:
+      prompt:
+        - '###Instruction###'
+        - 'Take a deep breath, review this instructions in full detail.'
+        - 'Important: I will provide an assistant response, create a JSON response with the detected metadata that will be stored in a JSON field:'
+        - 'Detect the user language as a 2 letter international code once you completely read all the user prompt.'
+      format:
+        - 'Use the following structure:'
+        - '{'
+        - '  "lang": "en", # detected 2 letter international code'
+        - '}'
+        - '###Example###'
+        - 'The red fox jumps over the lazy dog.'
+        - '{ "lang": "en" }'
+        - 'Donde esta la biblioteca?'
+        - '{ "lang": "es" }'
+    google_calendar_integration:
+      list_events_prompt:
+        - '###Instruction###'
+        - 'Take a deep breath, review this instructions in full detail.'
+        - 'You are part of a Google Calendar AI Integration in ruby using `google-apis-calendar_v3` gem'
+        - 'The user has requested information about his calendar using natural language.'
+        - 'I will provide the current date and time and timezone, using rails `Time.current`'
+        - 'Generate a JSON response containing the parameters to invoke the `list_events` method.'
+        - 'If the params cannot be determined, return an success attribute as false.'
+        - 'I will provide the documentation of the method for reference.'
+        - '###list_events method doc###'
+        - '# Returns events on the specified calendar.'
+        - '# @param [String] q'
+        - '#   Free text search terms to find events that match these terms in the following'
+        - '#   fields:'
+        - '#   - summary'
+        - '#   - description'
+        - '#   - location'
+        - '#   - attendee displayName'
+        - '#   - attendee email'
+        - '#   - organizer displayName'
+        - '#   - organizers email'
+        - '#   - workingLocationProperties.officeLocation.buildingId'
+        - '#   - workingLocationProperties.officeLocation.deskId'
+        - '#   - workingLocationProperties.officeLocation.label'
+        - '#   - workingLocationProperties.customLocation.label'
+        - '#   These search terms also match predefined keywords against all display title'
+        - '#   translations of working location, out-of-office, and focus-time events. For'
+        - '#   example, searching for "Office" or "Bureau" returns working location events of'
+        - '#   type officeLocation, whereas searching for "Out of office" or "Abwesend"'
+        - '#   returns out-of-office events. Optional.'
+        - '# @param [DateTime] time_max'
+        - '#   Upper bound (exclusive) for an event start time to filter by. Optional. The'
+        - '#   default is not to filter by start time. Must be an RFC3339 timestamp with'
+        - '#   mandatory time zone offset, for example, 2011-06-03T10:00:00-07:00, 2011-06-'
+        - '#   03T10:00:00Z. Milliseconds may be provided but are ignored. If timeMin is set,'
+        - '#   timeMax must be greater than timeMin.'
+        - '# @param [DateTime] time_min'
+        - '#   Lower bound (exclusive) for an events end time to filter by. Optional. The'
+        - '#   default is not to filter by end time. Must be an RFC3339 timestamp with'
+        - '#   mandatory time zone offset, for example, 2011-06-03T10:00:00-07:00, 2011-06-'
+        - '#   03T10:00:00Z. Milliseconds may be provided but are ignored. If timeMax is set,'
+        - '#   timeMin must be smaller than timeMax.'
+        - '###Example###'
+        - '[Assistant Reasoning: Start the week on Monday and end on Sunday]'
+        - 'Current Date: Thu, 06 Jun 2024 11:11:20.930410000 CST -06:00'
+        - 'User query: "Show me my events for this week"'
+        - '###JSON Response###'
+        - '{'
+        - '  "success": true,'
+        - '  "time_min": "2024-06-03T00:00:00-06:00",'
+        - '  "time_max": "2024-06-09T23:59:59-06:00"'
+        - '}'
+        - '###Example 2###'
+        - 'Current Date: Thu, 06 Jun 2024 11:11:20.930410000 CST -06:00'
+        - 'User query: When is my next event?'
+        - '[Assistant Reasoning: Use current date as the start date, and do not set an end date]'
+        - '###JSON Response###'
+        - '{'
+        - '  "success": true,'
+        - '  "time_min": "2024-06-06T11:11:20-06:00"'
+        - '}'
+        - '###Example 3###'
+        - 'Current Date: Thu, 06 Jun 2024 11:11:20.930410000 CST -06:00'
+        - 'User query: When is my next event with julieta'
+        - '[Assistant Reasoning: Use current date as start date since the user is asking for future events and a search term]'
+        - '###JSON Response###'
+        - '{'
+        - '  "success": true,'
+        - '  "q": "julieta",'
+        - '  "time_min": "2024-06-06T11:11:20-06:00"'
+        - '}'
+        - '###Example 3###'
+        - 'Current Date: Thu, 06 Jun 2024 11:11:20.930410000 CST -06:00'
+        - 'User query: When can I schedule a 30 minute meeting this week?'
+        - '[Assistant Reasoning: list current events for this week because they will be used in another prompt]'
+        - '###JSON Response###'
+        - '{'
+        - '  "success": true,'
+        - '  "time_min": "2024-06-03T00:00:00-06:00",'
+        - '  "time_max": "2024-06-09T23:59:59-06:00"'
+        - '}'
+        - '###Example 4###'
+        - 'Current Date: Thu, 06 Jun 2024 11:11:20.930410000 CST -06:00'
+        - 'User query: What is the meaning of life?'
+        - '[Assistant Reasoning: The query is irrelevant, for a calendar query, return an empty list]'
+        - '###JSON Response###'
+        - '{'
+        - '  "success": false'
+        - '}'
+      calendar_prompt:
+        - '###Instruction###'
+        - 'Take a deep breath, review this instructions in full detail.'
+        - 'You are part of a Google Calendar AI Integration in which the user is asking information about his calendar events.'
+        - 'I will provide the JSON response of the events lists that was previously fetched via Google Calendar API.'
+        - 'I will provide the current date and time and timezone, using rails `Time.current`'
+        - 'Generate an answer to the current user query formatted in markdown.'
+        - 'Add all the relevant details of the events in the response and only refer to the data in the json events for reference.'
+        - 'If you do not have enough information or you are not sure about the answer, return "No response" as the response'
+        - 'IMPORTANT: When formatting dates, do not use the day name, only the date and time formatted in the locale language of the timezone they were requested.'
+        - 'IMPORTANT: The events will be ordered ascending by startDate so you can use the next event, return the first element. Iterate over the events and consider all the information to prevent generating false data. I will give you a $200 TIP for a better solution.'
+  jobs:
+    create_conversation_title:
+      prompt:
+        - '###Instruction###'
+        - 'Take a deep breath, review this instructions in full detail.'
+        - 'Create a short title topic for a conversation between a user and an AI assistant. Just return the title content, do not format your response.'
+        - 'I will provide the last user prompt and the last assistant response.'
+        - 'IMPORTANT: You must use the same language as the user query to create the search term. I WILL GIVE YOU AN EXTRA $200 TIP.'
+  activerecord:
+    errors:
+      format: '%{attribute} %{message}'
+      messages:
+        record_invalid: 'La validación falló: %{errors}'
+        invalid_url: 'no es una URL válida'
+        # CarrierWave
+        carrierwave_processing_error: Falló el procesamiento
+        carrierwave_integrity_error: No es un tipo de archivo aceptado
+        carrierwave_download_error: No pudo ser descargado
+        extension_whitelist_error: 'No puedes subir archivos de tipo %{extension}, archivos permitidos: %{allowed_types}'
+        extension_blacklist_error: 'No puedes subir archivos de tipo %{extension}, extensiones prohibidas: %{prohibited_types}'
+        content_type_whitelist_error: 'No puedes subir archivos de tipo %{content_type}'
+        content_type_blacklist_error: 'No puedes subir archivos de tipo %{content_type}'
+        rmagick_processing_error: 'Falló la manipulación de rmagick. El archivo no es una imágen válida'
+        mini_magick_processing_error: 'Falló la manipulación de rmagick. El archivo no es una imágen válida. Error: %{e}'
+        min_size_error: 'el archivo debe ser mayor a %{min_size}'
+        max_size_error: 'el archivo debe ser menor a %{max_size}'
+        # default ActiveRecord messages
+        accepted: debe ser aceptado
+        blank: no puede estar en blanco
+        present: debe estar en blanco
+        confirmation: no coincide
+        empty: no puede estar vacío
+        equal_to: debe ser igual a %{count}
+        even: debe ser par
+        exclusion: está reservado
+        greater_than: debe ser mayor que %{count}
+        greater_than_or_equal_to: debe ser mayor que o igual a %{count}
+        inclusion: no está incluido en la lista
+        invalid: no es válido
+        less_than: debe ser menor que %{count}
+        less_than_or_equal_to: debe ser menor que o igual a %{count}
+        model_invalid: 'La validación falló: %{errors}'
+        not_a_number: no es un número
+        not_an_integer: debe ser un entero
+        odd: debe ser impar
+        required: debe existir
+        taken: ya está en uso
+        too_long:
+          one: 'es demasiado largo (1 carácter máximo)'
+          other: 'es demasiado largo (%{count} caracteres máximo)'
+        too_short:
+          one: 'es demasiado corto (1 carácter mínimo)'
+          other: 'es demasiado corto (%{count} caracteres mínimo)'
+        wrong_length:
+          one: 'no tiene la longitud correcta (1 carácter exactos)'
+          other: 'no tiene la longitud correcta (%{count} caracteres exactos)'
+        other_than: debe ser distinto de %{count}
