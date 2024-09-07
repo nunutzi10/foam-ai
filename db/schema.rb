@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_08_25_014038) do
+ActiveRecord::Schema[7.0].define(version: 2024_08_31_191750) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "unaccent"
@@ -52,6 +52,57 @@ ActiveRecord::Schema[7.0].define(version: 2024_08_25_014038) do
     t.index ["tenant_id"], name: "index_api_keys_on_tenant_id"
   end
 
+  create_table "bots", force: :cascade do |t|
+    t.string "name"
+    t.datetime "deleted_at"
+    t.text "custom_instructions"
+    t.string "whatsapp_phone"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "tenant_id"
+    t.text "user_instructions"
+    t.index ["tenant_id"], name: "index_bots_on_tenant_id"
+  end
+
+  create_table "completions", force: :cascade do |t|
+    t.bigint "bot_id", null: false
+    t.integer "status", default: 0
+    t.string "prompt"
+    t.text "full_prompt"
+    t.json "context"
+    t.string "response"
+    t.json "metadata"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bot_id"], name: "index_completions_on_bot_id"
+  end
+
+  create_table "contacts", force: :cascade do |t|
+    t.bigint "tenant_id"
+    t.string "name"
+    t.string "last_name"
+    t.string "email"
+    t.string "phone"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id"], name: "index_contacts_on_tenant_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.bigint "contact_id"
+    t.integer "status", default: 0
+    t.integer "sender", default: 0
+    t.integer "content_type", default: 0
+    t.string "body"
+    t.string "media_url"
+    t.string "vonage_id"
+    t.string "custom_destination"
+    t.json "metadata"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contact_id"], name: "index_messages_on_contact_id"
+  end
+
   create_table "tenants", force: :cascade do |t|
     t.string "name", null: false
     t.json "settings", default: {}
@@ -88,5 +139,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_08_25_014038) do
   end
 
   add_foreign_key "admins", "tenants"
+  add_foreign_key "bots", "tenants"
+  add_foreign_key "completions", "bots"
+  add_foreign_key "contacts", "tenants"
+  add_foreign_key "messages", "contacts"
   add_foreign_key "users", "tenants"
 end

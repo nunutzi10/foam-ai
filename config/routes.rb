@@ -30,5 +30,10 @@ Rails.application.routes.draw do
     resources :tenants, only: %i[index show update]
     # [ApiKey] routes
     resources :api_keys, only: %i[index show create update destroy]
+    # Vonage Webhook routes
+    resources :vonage, only: %i[] do
+      post :messages, on: :collection
+      post :status, on: :collection
+    end
   end
 end

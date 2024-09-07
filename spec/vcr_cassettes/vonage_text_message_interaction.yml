@@ -1,0 +1,148 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-3.5-turbo-16k","messages":[{"role":"system","content":"Carmona"},{"role":"user","content":"test"},{"role":"user","content":"Ana
+        Luisa Núñez Barraza"}],"temperature":0,"max_tokens":1500,"top_p":0,"frequency_penalty":0,"presence_penalty":0}'
+    headers:
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer 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
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sat, 07 Sep 2024 20:15:53 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - tgc-ebw4si
+      Openai-Processing-Ms:
+      - '766'
+      Openai-Version:
+      - '2020-10-01'
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains; preload
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '10000000'
+      X-Ratelimit-Remaining-Requests:
+      - '9999'
+      X-Ratelimit-Remaining-Tokens:
+      - '9998487'
+      X-Ratelimit-Reset-Requests:
+      - 6ms
+      X-Ratelimit-Reset-Tokens:
+      - 9ms
+      X-Request-Id:
+      - req_a5f6de71b6c88f2aa4e03591c99b9ea0
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=dZkMkjftPtxziADX1bOM8cp3_xUb9U4FiZiv7GKPgpA-1725740153-1.0.1.1-pXvw9MDbTJJcJW_m0QmHvJzZDnglK4KwXNhkjmynPbqUWPrVfvmqaJhOMd7qi1piSJjKxtA11n7swluTxAn4Yg;
+        path=/; expires=Sat, 07-Sep-24 20:45:53 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=uVTcbqDQMjyROda_RYlhke8umcC1PnS.sQbjkBYYSu4-1725740153738-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 8bf95f92cf95c2f3-IAH
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        ewogICJpZCI6ICJjaGF0Y21wbC1BNHc4V2NUR2dWR2JnanBYUXZqYVNHN2pwN3FvMSIsCiAgIm9iamVjdCI6ICJjaGF0LmNvbXBsZXRpb24iLAogICJjcmVhdGVkIjogMTcyNTc0MDE1MiwKICAibW9kZWwiOiAiZ3B0LTMuNS10dXJiby0xNmstMDYxMyIsCiAgImNob2ljZXMiOiBbCiAgICB7CiAgICAgICJpbmRleCI6IDAsCiAgICAgICJtZXNzYWdlIjogewogICAgICAgICJyb2xlIjogImFzc2lzdGFudCIsCiAgICAgICAgImNvbnRlbnQiOiAiQW5hIEx1aXNhIE7DusOxZXogQmFycmF6YSBpcyBhIGNvbW1vbiBuYW1lIGluIFNwYW5pc2gtc3BlYWtpbmcgY291bnRyaWVzLiBJdCBpcyBhIGNvbWJpbmF0aW9uIG9mIGEgZmlyc3QgbmFtZSAoQW5hIEx1aXNhKSBhbmQgdHdvIGxhc3QgbmFtZXMgKE7DusOxZXogQmFycmF6YSkuIEl0IGlzIG5vdCBwb3NzaWJsZSB0byBwcm92aWRlIHNwZWNpZmljIGluZm9ybWF0aW9uIGFib3V0IGEgcGVyc29uIHdpdGggdGhpcyBuYW1lIHdpdGhvdXQgZnVydGhlciBkZXRhaWxzLiIsCiAgICAgICAgInJlZnVzYWwiOiBudWxsCiAgICAgIH0sCiAgICAgICJsb2dwcm9icyI6IG51bGwsCiAgICAgICJmaW5pc2hfcmVhc29uIjogInN0b3AiCiAgICB9CiAgXSwKICAidXNhZ2UiOiB7CiAgICAicHJvbXB0X3Rva2VucyI6IDI5LAogICAgImNvbXBsZXRpb25fdG9rZW5zIjogNjMsCiAgICAidG90YWxfdG9rZW5zIjogOTIKICB9LAogICJzeXN0ZW1fZmluZ2VycHJpbnQiOiBudWxsCn0K
+  recorded_at: Sat, 07 Sep 2024 20:15:52 GMT
+- request:
+    method: post
+    uri: https://messages-sandbox.nexmo.com/v1/messages
+    body:
+      encoding: UTF-8
+      string: '{"from":"14157386102","to":"524422591631","channel":"whatsapp","message_type":"text","text":"Ana
+        Luisa Núñez Barraza is a common name in Spanish-speaking countries. It is
+        a combination of a first name (Ana Luisa) and two last names (Núñez Barraza).
+        It is not possible to provide specific information about a person with this
+        name without further details."}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - vonage-ruby/7.16.1 ruby/3.1.2
+      Host:
+      - messages-sandbox.nexmo.com
+      Authorization:
+      - Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3MjU3NDAxNTIsImp0aSI6IjNkZTk2YjY1LWEwZWEtNDY3Yi04NmVjLTY2ZjJlMzE3MjI5ZCIsImV4cCI6MTcyNTc0MTA1MiwiYXBwbGljYXRpb25faWQiOiI2NjY0YjcxZC01ZWZkLTQxYWUtOTQzYi03OTBhM2Y4MmI4ODcifQ.F5zAphrfyl0zWtTc_UONAbH7GADMzNGcxkriT9j4F79PnWAIH-wGFuBm_B_bKsQ-e7eMg4neR4JKlxXMU9NpGbvj4VTUeLpWaI1Bw6t265-VudPqhf4DHOZJUkyPYC9kJ_VCTZbxzzqC3xagfDhBvPX90nwgOjA8tJWaK_ZU_aOrNhkfKFiJipXfBBuAIN4T1EPklx6O_JhFSIZV4fCxozl__BLyYCu1yyG7qNBEvPi7Y1jC7oG5VZDoz4gBaT0-UKy1PE09EaFicAoIvbK8ooH72zwFtASKyskxt_mmah4rJLGKkzBJ9OGCjcFoy5cCVLv-OahwswO-5Al5cIFLQQ
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 202
+      message: Accepted
+    headers:
+      Date:
+      - Sat, 07 Sep 2024 20:15:54 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '55'
+      Connection:
+      - keep-alive
+      X-Ratelimit-Remaining:
+      - '0'
+      - '39'
+      X-Ratelimit-Reset:
+      - '1'
+      - '1'
+      X-Envoy-Upstream-Service-Time:
+      - '66'
+      X-Ratelimit-Limit:
+      - 1, 1;w=1;name="crd|account_id|generic_key^nexmo-messages.messages-sandbox|generic_key^solo.setDescriptor.uniqueValue"
+      - 40, 40;w=1;name="crd|account_id|generic_key^nexmo-messages.messages-v1|generic_key^solo.setDescriptor.uniqueValue"
+      Cache-Control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      Pragma:
+      - no-cache
+      Expires:
+      - '0'
+      Referrer-Policy:
+      - no-referrer
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - envoy
+    body:
+      encoding: UTF-8
+      string: '{"message_uuid":"20edfeb1-51a3-4846-82cf-d7e565e3ab5e"}'
+  recorded_at: Sat, 07 Sep 2024 20:15:52 GMT
+recorded_with: VCR 6.1.0

@@ -12,6 +12,9 @@ es:
       failed:
         subject: 'Utoppia | Pago Fallido'
   models:
+    invalid_response: 'Ups! Desafortunadamente no pude producir una respuesta con el contexto que fui entrenado 😳. Podrás proporcionar más información relacionada a la encuesta para ayudarte?'
+    first_interaction:
+      unknown_interaction: "Hola! Soy un bot de Inteligencia Artificial para responder cualquiera de tus preguntas por WhatsApp! 🤖"
     embedding:
       scrapper_prompt:
         instructions:

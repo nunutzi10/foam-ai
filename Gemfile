@@ -92,7 +92,7 @@ gem 'webrick', '~> 1.8.1'
 # Use [neighbor] for vector support in ActiveRecord
 gem 'neighbor', '~> 0.2.3'
 # Use [openai] for Embeddings & Chat Prompts
-gem 'ruby-openai', github: 'thegurucompany/ruby-openai'
+gem 'ruby-openai', '~> 6.3.1'
 # Use [text-extractor] for extracting text from files
 gem 'text-extractor', github: 'thegurucompany/text-extractor'
 # Use [puppeteer-ruby] for website scrapping
@@ -115,6 +115,12 @@ gem 'wicked_pdf', '~> 2.8.0'
 gem 'wkhtmltopdf-binary', '~> 0.12.6.7'
 # use [htmltoword] for converting HTML to Word documents
 gem 'htmltoword', '~> 1.1.1'
+# Use [vonage] for Whatsapp API
+gem 'vonage', '~> 7.16.1'
+# Use [people] for contact name & last_name parsing
+gem 'people', '~> 0.2.1'
+# convert image to string
+gem 'rtesseract', '~> 3.1.3'
 
 group :development, :test do
   # use rspec for unit and integration tests

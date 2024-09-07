@@ -457,3 +457,5 @@ Naming/PredicateName: # new in 2.12
   Enabled: false
 Lint/Void: # new in 2.12
   Enabled: false
+Security/Open:
+  Enabled: false
