@@ -1,10 +1,6 @@
 es:
   errors:
     no_billing_cycle: 'No se encontró un ciclo de facturación activo'
-    max_ai_context_limit_reached: 'Se alcanzó el límite de Contextos de AI (%{limit})'
-    max_completions_per_cycle_limit_reached: 'Se alcanzó el límite de Consultas (%{limit})'
-    invalid_ai_model: 'Modelo de AI inválido o no disponible en su plan'
-    google_drive_not_enabled: 'Google Drive no está habilitado en su plan'
   mailers:
     payment:
       receipt:
