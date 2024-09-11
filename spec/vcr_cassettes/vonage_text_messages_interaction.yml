@@ -1,0 +1,151 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-3.5-turbo-16k","messages":[{"role":"system","content":"Rodarte"},{"role":"user","content":"Gracias.
+        Por cierto, mencioné que tenía un proyecto importante la semana pasada. ¿Recuerdas
+        cuál era?"},{"role":"system","content":"Mantén la respiración lenta y profunda,
+        y trata de mantenerte enfocado"},{"role":"user","content":"La proxima semana
+        tengo una presentacion de la importancia de dormir"}],"temperature":0,"max_tokens":1500,"top_p":0,"frequency_penalty":0,"presence_penalty":0}'
+    headers:
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer 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
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 06 Sep 2024 04:34:27 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - tgc-ebw4si
+      Openai-Processing-Ms:
+      - '849'
+      Openai-Version:
+      - '2020-10-01'
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains; preload
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '10000000'
+      X-Ratelimit-Remaining-Requests:
+      - '9999'
+      X-Ratelimit-Remaining-Tokens:
+      - '9998432'
+      X-Ratelimit-Reset-Requests:
+      - 6ms
+      X-Ratelimit-Reset-Tokens:
+      - 9ms
+      X-Request-Id:
+      - req_9fe99a28022516153102d5622312071b
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=juqNzxyv083gfwSkW3ZzWYb5yKP8UBX3m_tIRtABFdw-1725597267-1.0.1.1-vnGEMv_qy6.qqIYc.I4zOrtO3wxlvsh_pQQXosBGP64BQ5x_MenWNAsJH.RcPLuXUU0sKxfPGpFJDwvEhB4FIg;
+        path=/; expires=Fri, 06-Sep-24 05:04:27 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=yI3sVyOrFCc62joPaFGXgv4NrtKAf1cma2OCRBOIyJM-1725597267011-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 8bebbf203e9a16d5-IAH
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        ewogICJpZCI6ICJjaGF0Y21wbC1BNEt4dUhTcHpHb1JlSmRXM3pHaHg4SWpnZTQyWiIsCiAgIm9iamVjdCI6ICJjaGF0LmNvbXBsZXRpb24iLAogICJjcmVhdGVkIjogMTcyNTU5NzI2NiwKICAibW9kZWwiOiAiZ3B0LTMuNS10dXJiby0xNmstMDYxMyIsCiAgImNob2ljZXMiOiBbCiAgICB7CiAgICAgICJpbmRleCI6IDAsCiAgICAgICJtZXNzYWdlIjogewogICAgICAgICJyb2xlIjogImFzc2lzdGFudCIsCiAgICAgICAgImNvbnRlbnQiOiAiwqFDbGFybyEgUmVjdWVyZG8gcXVlIG1lbmNpb25hc3RlIHF1ZSB0ZW7DrWFzIHVuYSBwcmVzZW50YWNpw7NuIHNvYnJlIGxhIGltcG9ydGFuY2lhIGRlIGRvcm1pci4gRXMgdW4gdGVtYSBtdXkgaW50ZXJlc2FudGUgeSByZWxldmFudGUsIHlhIHF1ZSBlbCBzdWXDsW8ganVlZ2EgdW4gcGFwZWwgZnVuZGFtZW50YWwgZW4gbnVlc3RyYSBzYWx1ZCB5IGJpZW5lc3Rhci4gwr9OZWNlc2l0YXMgYWxndW5hIGF5dWRhIG8gY29uc2VqbyBwYXJhIHByZXBhcmFyIHR1IHByZXNlbnRhY2nDs24/IiwKICAgICAgICAicmVmdXNhbCI6IG51bGwKICAgICAgfSwKICAgICAgImxvZ3Byb2JzIjogbnVsbCwKICAgICAgImZpbmlzaF9yZWFzb24iOiAic3RvcCIKICAgIH0KICBdLAogICJ1c2FnZSI6IHsKICAgICJwcm9tcHRfdG9rZW5zIjogODMsCiAgICAiY29tcGxldGlvbl90b2tlbnMiOiA2OCwKICAgICJ0b3RhbF90b2tlbnMiOiAxNTEKICB9LAogICJzeXN0ZW1fZmluZ2VycHJpbnQiOiBudWxsCn0K
+  recorded_at: Fri, 06 Sep 2024 04:34:24 GMT
+- request:
+    method: post
+    uri: https://messages-sandbox.nexmo.com/v1/messages
+    body:
+      encoding: UTF-8
+      string: '{"from":"14157386102","to":"524422591631","channel":"whatsapp","message_type":"text","text":"¡Claro!
+        Recuerdo que mencionaste que tenías una presentación sobre la importancia
+        de dormir. Es un tema muy interesante y relevante, ya que el sueño juega un
+        papel fundamental en nuestra salud y bienestar. ¿Necesitas alguna ayuda o
+        consejo para preparar tu presentación?"}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - vonage-ruby/7.16.1 ruby/3.1.2
+      Host:
+      - messages-sandbox.nexmo.com
+      Authorization:
+      - Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3MjU1OTcyNjQsImp0aSI6IjFjNDZiN2M4LTU5NjQtNGJjNS1hYmVjLWMxMWM3ODhhNDlkZiIsImV4cCI6MTcyNTU5ODE2NCwiYXBwbGljYXRpb25faWQiOiI2NjY0YjcxZC01ZWZkLTQxYWUtOTQzYi03OTBhM2Y4MmI4ODcifQ.reGSrluut7QxCOJHnSoFgSII61i1AyI-4U2TFEiLbAo8eDGeFlT2wxVdssR3WJGpJ08aEtzfvJGRocZPHc5duRKCdxVmgrr9fJHxDW3_olXL4iDVrPDp20cyoEC4nA-7pL-ld_47h10Ub7w2YhXwxMsGMsnpoCQJbYVNdQnuzp2vShWE86Xk7sGfvjxn5apQHXmQ5zfdPKjhqX4YfGKtdt_tzLmpPGa4q4LgQguII3kr9LOHnUAaeRsAl-K46LNSuWhL2epLchrtsr2yNeFxrFXXT2JfzPp4z2rfnqNG8ZeP_B-aCzy1VaKnrz59_PMQD1PTb6yhG5az7g-vrlg3_w
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 202
+      message: Accepted
+    headers:
+      Date:
+      - Fri, 06 Sep 2024 04:34:27 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '55'
+      Connection:
+      - keep-alive
+      X-Ratelimit-Remaining:
+      - '0'
+      - '39'
+      X-Ratelimit-Reset:
+      - '1'
+      - '1'
+      X-Ratelimit-Limit:
+      - 1, 1;w=1;name="crd|account_id|generic_key^nexmo-messages.messages-sandbox|generic_key^solo.setDescriptor.uniqueValue"
+      - 40, 40;w=1;name="crd|account_id|generic_key^nexmo-messages.messages-v1|generic_key^solo.setDescriptor.uniqueValue"
+      X-Envoy-Upstream-Service-Time:
+      - '74'
+      Cache-Control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      Pragma:
+      - no-cache
+      Expires:
+      - '0'
+      Referrer-Policy:
+      - no-referrer
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - envoy
+    body:
+      encoding: UTF-8
+      string: '{"message_uuid":"3f015436-4148-4bc5-9786-c4b926d2bf59"}'
+  recorded_at: Fri, 06 Sep 2024 04:34:24 GMT
+recorded_with: VCR 6.1.0

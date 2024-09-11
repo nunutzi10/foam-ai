@@ -76,10 +76,23 @@ VCR.configure do |config|
        url_regex.match(recorded_request.uri))
   end
 
-  # Antrhopic API
-  config.register_request_matcher :anthropic_api do
+  # Vonage API
+  config.register_request_matcher :vonage_api do
     |real_request, recorded_request|
-    url_regex = /^https:\/\/api\.anthropic\.com.*$/
+    url_regex = %r{
+      ^https://messages-sandbox\.nexmo\.com.*$
+      |
+      ^https://api\.nexmo\.com.*$
+    }x
+    real_request.uri == recorded_request.uri ||
+      (url_regex.match(real_request.uri) &&
+       url_regex.match(recorded_request.uri))
+  end
+
+  # Vonage Media
+  config.register_request_matcher :vonage_media do
+    |real_request, recorded_request|
+    url_regex = /^https:\/\/api-eu.nexmo.com.*$/
     real_request.uri == recorded_request.uri ||
       (url_regex.match(real_request.uri) &&
        url_regex.match(recorded_request.uri))

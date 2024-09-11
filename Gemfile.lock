@@ -8,15 +8,6 @@ GIT
       rails (>= 5)
 
 GIT
-  remote: https://github.com/thegurucompany/ruby-openai.git
-  revision: def84548e5b4437b951770c258fd89898a875f65
-  specs:
-    ruby-openai (6.3.1)
-      event_stream_parser (>= 0.3.0, < 2.0.0)
-      faraday (>= 1)
-      faraday-multipart (>= 1)
-
-GIT
   remote: https://github.com/thegurucompany/text-extractor.git
   revision: 49e8484998e1187344a68178ee3c54ee7e09f55f
   specs:
@@ -256,7 +247,9 @@ GEM
     parser (3.3.4.2)
       ast (~> 2.4.1)
       racc
+    people (0.2.1)
     pg (1.5.7)
+    phonelib (0.8.8)
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -355,6 +348,7 @@ GEM
       rspec-mocks (~> 3.10)
       rspec-support (~> 3.10)
     rspec-support (3.13.1)
+    rtesseract (3.1.3)
     rubocop (1.65.1)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
@@ -374,6 +368,10 @@ GEM
       rubocop (>= 1.7.0, < 2.0)
     rubocop-rspec (2.12.1)
       rubocop (~> 1.31)
+    ruby-openai (6.3.1)
+      event_stream_parser (>= 0.3.0, < 2.0.0)
+      faraday (>= 1)
+      faraday-multipart (>= 1)
     ruby-progressbar (1.13.0)
     rubyzip (2.3.2)
     shoulda-matchers (5.3.0)
@@ -395,6 +393,7 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.4)
+    sorbet-runtime (0.5.11371)
     spring (4.2.1)
     strscan (3.1.0)
     thor (1.3.1)
@@ -412,6 +411,15 @@ GEM
       activesupport (>= 3)
       railties (>= 3)
       yard (~> 0.9.20)
+    vonage (7.16.1)
+      multipart-post (~> 2.0)
+      phonelib
+      rexml
+      sorbet-runtime (~> 0.5)
+      vonage-jwt (~> 0.1.3)
+      zeitwerk (~> 2, >= 2.2)
+    vonage-jwt (0.1.3)
+      jwt (~> 2)
     warden (1.2.9)
       rack (>= 2.0.9)
     webmock (3.16.2)
@@ -455,6 +463,7 @@ DEPENDENCIES
   paper_trail (~> 12.1)
   parallel_tests (~> 4.2.1)
   paranoia (~> 2.6.0)
+  people (~> 0.2.1)
   pg (~> 1.1)
   pry-rails (~> 0.3.9)
   puma (~> 5.0)
@@ -469,9 +478,10 @@ DEPENDENCIES
   redis (~> 5.2.0)
   rest-client (~> 2.1.0)
   rspec-rails (~> 5.0, >= 5.0.2)
+  rtesseract (~> 3.1.3)
   rubocop-rails (~> 2.15.2)
   rubocop-rspec (~> 2.12.1)
-  ruby-openai!
+  ruby-openai (~> 6.3.1)
   shoulda-matchers (~> 5.1)
   sidekiq (~> 7.2.4)
   sidekiq-cron (~> 1.12.0)
@@ -484,6 +494,7 @@ DEPENDENCIES
   tzinfo-data (~> 1.2023.3)
   vcr (~> 6.1.0)
   versionist (~> 2.0.1)
+  vonage (~> 7.16.1)
   webmock (~> 3.16.2)
   webrick (~> 1.8.1)
   wicked_pdf (~> 2.8.0)
