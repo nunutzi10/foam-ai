@@ -1,0 +1,76 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-3.5-turbo-16k","messages":[{"role":"system","content":"Santillán"},{"role":"user","content":"Hola"}],"temperature":0,"max_tokens":2000,"top_p":0,"frequency_penalty":0,"presence_penalty":0}'
+    headers:
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer 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
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Wed, 25 Sep 2024 05:08:34 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - tgc-ebw4si
+      Openai-Processing-Ms:
+      - '211'
+      Openai-Version:
+      - '2020-10-01'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '10000000'
+      X-Ratelimit-Remaining-Requests:
+      - '9999'
+      X-Ratelimit-Remaining-Tokens:
+      - '9997993'
+      X-Ratelimit-Reset-Requests:
+      - 6ms
+      X-Ratelimit-Reset-Tokens:
+      - 12ms
+      X-Request-Id:
+      - req_dac6db9ac7524c3a788fe17950ae3bac
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=q9VUIkOuWi_Eaqumx8CARluZBo0Rn9DWjAgxyBENjEE-1727240914-1.0.1.1-x9k5.gcJVHUJuw9_r_INLS.9w2iMSVyWsUb7cB89dY3UUsppEW9T8bI6yqtdSOd2Gum1drOBfLXokaxU8nQU_Q;
+        path=/; expires=Wed, 25-Sep-24 05:38:34 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=AHO_GNZQFIG1dFAPLbL5pDfkxGr6hwvK4ts9bXfZdsk-1727240914202-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 8c887f3f38764868-DFW
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        ewogICJpZCI6ICJjaGF0Y21wbC1BQkVZTEZaRkl0VDlsTkdGajNOZEpaYVFHSDF5ayIsCiAgIm9iamVjdCI6ICJjaGF0LmNvbXBsZXRpb24iLAogICJjcmVhdGVkIjogMTcyNzI0MDkxMywKICAibW9kZWwiOiAiZ3B0LTMuNS10dXJiby0xNmstMDYxMyIsCiAgImNob2ljZXMiOiBbCiAgICB7CiAgICAgICJpbmRleCI6IDAsCiAgICAgICJtZXNzYWdlIjogewogICAgICAgICJyb2xlIjogImFzc2lzdGFudCIsCiAgICAgICAgImNvbnRlbnQiOiAiwqFIb2xhISDCv0VuIHF1w6kgcHVlZG8gYXl1ZGFydGUgaG95PyIsCiAgICAgICAgInJlZnVzYWwiOiBudWxsCiAgICAgIH0sCiAgICAgICJsb2dwcm9icyI6IG51bGwsCiAgICAgICJmaW5pc2hfcmVhc29uIjogInN0b3AiCiAgICB9CiAgXSwKICAidXNhZ2UiOiB7CiAgICAicHJvbXB0X3Rva2VucyI6IDE2LAogICAgImNvbXBsZXRpb25fdG9rZW5zIjogMTEsCiAgICAidG90YWxfdG9rZW5zIjogMjcsCiAgICAiY29tcGxldGlvbl90b2tlbnNfZGV0YWlscyI6IHsKICAgICAgInJlYXNvbmluZ190b2tlbnMiOiAwCiAgICB9CiAgfSwKICAic3lzdGVtX2ZpbmdlcnByaW50IjogbnVsbAp9Cg==
+  recorded_at: Wed, 25 Sep 2024 05:08:34 GMT
+recorded_with: VCR 6.1.0

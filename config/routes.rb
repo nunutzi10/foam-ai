@@ -35,5 +35,7 @@ Rails.application.routes.draw do
       post :messages, on: :collection
       post :status, on: :collection
     end
+    # [Completion] routes
+    resources :completions, only: %i[index show create]
   end
 end

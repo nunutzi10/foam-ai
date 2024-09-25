@@ -9,5 +9,9 @@ FactoryBot.define do
     trait :admins do
       role { ApiKey::Role::ADMINS }
     end
+
+    trait :completions do
+      role { ApiKey::Role::COMPLETIONS }
+    end
   end
 end

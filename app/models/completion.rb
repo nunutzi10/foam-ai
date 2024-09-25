@@ -5,6 +5,7 @@ class Completion < ApplicationRecord
   # includes
   include DateFilterable
   include Openaiable
+  include Tenantable
   # associations
   belongs_to :bot
   # delegations
@@ -21,6 +22,25 @@ class Completion < ApplicationRecord
     }.freeze
   end
 
+  # enums
+  enum status: Status::LIST
+
+  # Scopes
+  # returns all the records that belong to a tenant through an [Bot]
+  #   association
+  # @param [Tenant] - tenant
+  # @return ActiveRecord::Relation
+  def self.filter_by_tenant(tenant)
+    where(
+      'EXISTS(?)',
+      Bot.select(1)
+        .where('bots.id = completions.bot_id')
+        .where(tenant:)
+        .limit(1)
+    )
+  end
+
+  # methods
   # creates the full prompt for the completion composed of base instructions,
   #   the [TextChunk] records grouped by embedding and the final instructions
   # updates the [full_prompt] attribute with the result
@@ -52,7 +72,7 @@ class Completion < ApplicationRecord
   # Updates the [status] attribute to [Status::INVALID_RESPONSE] if the
   #  [response] attribute matches any of the [NO_RESPONSE_REGEXPS]
   # @return nil
-  def create_openai_completion!(messages)
+  def create_openai_completion!(messages = nil)
     create_full_prompt!
     http_response = openai_client.chat(
       parameters: openai_parameters(messages)
