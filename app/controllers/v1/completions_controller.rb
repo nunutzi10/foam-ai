@@ -60,6 +60,23 @@ module V1
       json_response @completion
     end
 
+    # returns the information of a new completions resource created
+    # @return [JSON] new Completion on JSON fromat
+    # @example success
+    #   {
+    #     "completion"=> {
+    #       "id"=>1,
+    #       "updated_at"=>"2020-07-29T20:05:41.780Z",
+    #       "created_at"=>"2020-07-29T20:05:41.780Z",
+    #       "bot_id"=>1,
+    #       "status"=>"valid_response",
+    #       "prompt"=>"Possimus nesciunt ut aspernatur.",
+    #       "full_prompt"=>nil,
+    #       "context"=>nil,
+    #       "response"=>"Aliquid magnam nobis accusantium.",
+    #       "metadata"=>nil
+    #     }
+    #   }
     def create
       authorize Completion
       completion = CreateCompletionService.call!(

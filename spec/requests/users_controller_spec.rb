@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 describe V1::UsersController do
-  let(:user) { create :user }
+  let(:admin) { create :admin, :admin }
 
   describe 'POST /v1/sign_in' do
+    let(:user) { create :user }
     let(:password) { 'notas3cret' }
     let(:params) do
       {
@@ -121,9 +122,9 @@ describe V1::UsersController do
     let!(:url) { v1_users_url }
 
     context 'with auth' do
-      let!(:record) { create :user, tenant: user.tenant }
+      let!(:user) { create :user, tenant: admin.tenant }
 
-      sign_in :user
+      sign_in :admin
 
       it 'retrives a list of all existing user records' do
         get url
@@ -133,10 +134,10 @@ describe V1::UsersController do
         users_data = json['users']
         user_data = users_data.first
         expect(users_data.count).to eq(1)
-        expect(user_data['id']).to eq(record.id)
-        expect(user_data['name']).to eq(record.name)
-        expect(user_data['last_name']).to eq(record.last_name)
-        expect(user_data['email']).to eq(record.email)
+        expect(user_data['id']).to eq(user.id)
+        expect(user_data['name']).to eq(user.name)
+        expect(user_data['last_name']).to eq(user.last_name)
+        expect(user_data['email']).to eq(user.email)
         expect(user_data['created_at']).to be_present
         expect(user_data['updated_at']).to be_present
       end
@@ -177,7 +178,7 @@ describe V1::UsersController do
         expect(response).to have_http_status(:ok)
         # data expectations
         users_data = json['users']
-        expect(users_data.count).to eq(2)
+        expect(users_data.count).to eq(1)
         expect(users_data.map { |a| a['id'] }).to include(user.id)
       end
     end
@@ -200,16 +201,15 @@ describe V1::UsersController do
     end
 
     context 'with filter' do
-      let!(:tenant) { create :tenant }
       let(:user) do
-        create :user, tenant:
+        create :user, tenant: admin.tenant
       end
 
-      sign_in :user
+      sign_in :admin
 
       it 'lists a collection of [User] elements filtered by name' do
         # create eligible record
-        record = create(:user, tenant:, name: 'Dino')
+        record = create(:user, tenant: admin.tenant, name: 'Dino')
         # http request
         get url, params: { globalSearch: 'Dino' }
         # status code expectations
@@ -225,15 +225,16 @@ describe V1::UsersController do
 
   describe 'POST /v1/users' do
     let!(:url) { v1_users_url }
-    let!(:tenant) { create(:tenant) }
 
-    context 'with valid params' do
+    context 'with auth' do
+      sign_in :admin
+
       let!(:params) { attributes_for(:user) }
 
       it 'creates a new user with the given params' do
         post url, params: {
           user: params,
-          tenant_id: tenant.id
+          tenant_id: admin.tenant.id
         }
         expect(response).to have_http_status(:created)
         user_data = json['user']
@@ -241,13 +242,11 @@ describe V1::UsersController do
         expect(user_data['last_name']).to eq(params[:last_name])
         expect(user_data['email']).to eq(params[:email])
       end
-    end
 
-    context 'with invalid params' do
-      it 'returns unprocessable_entity status' do
+      it 'returns unprocessable_entity status with invalid params' do
         post url, params: {
           user: { name: '' },
-          tenant_id: tenant.id
+          tenant_id: admin.tenant.id
         }
         expect(response).to have_http_status(:unprocessable_entity)
       end
@@ -256,13 +255,13 @@ describe V1::UsersController do
 
   describe 'GET /v1/users/:id' do
     let!(:record) do
-      create(:user, tenant: user.tenant)
+      create(:user, tenant: admin.tenant)
     end
 
     let!(:url) { v1_user_url(record.id) }
 
     context 'with auth' do
-      sign_in :user
+      sign_in :admin
 
       it 'returns user by id' do
         get url
@@ -286,13 +285,13 @@ describe V1::UsersController do
   end
 
   describe 'PUT /v1/users/:id' do
-    let!(:record) { create(:user, tenant: user.tenant) }
+    let!(:record) { create(:user, tenant: admin.tenant) }
 
     let!(:url) { v1_user_url(record.id) }
     let!(:params) { attributes_for(:user) }
 
     context 'with auth' do
-      sign_in :user
+      sign_in :admin
 
       it 'updates an user with the given params' do
         put url, params: { user: params }
@@ -309,16 +308,17 @@ describe V1::UsersController do
     context 'without auth' do
       it 'returns unauthorized' do
         put url, params: { user: params }
-        expect(response).to have_http_status(:unauthorized)
+        expect(response).to have_http_status(:forbidden)
       end
     end
   end
 
   describe 'DELETE /users/:id' do
+    let!(:user) { create :user, tenant: admin.tenant }
     let!(:url) { v1_user_url(user.id) }
 
-    context 'with user auth' do
-      sign_in :user
+    context 'with auth' do
+      sign_in :admin
 
       it 'deletes a [User] element' do
         delete url
@@ -350,6 +350,7 @@ describe V1::UsersController do
   end
 
   describe 'GET /v1/validate_token' do
+    let!(:user) { create :user, tenant: admin.tenant }
     let!(:url) { users_validate_token_url }
 
     context 'with auth' do
@@ -362,7 +363,7 @@ describe V1::UsersController do
         # data expectations
         user_data = json['user']
         # user data expectations
-        expect(user_data['id']).to be_present
+        expect(user_data['id']).to eq(user.id)
         expect(user_data['name']).to be_present
         expect(user_data['last_name']).to be_present
         expect(user_data['email']).to be_present
