@@ -45,7 +45,7 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.perform_deliveries = true
-  config.action_mailer.delivery_method = :ses
+  config.action_mailer.delivery_method = :mailjet_api
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
@@ -64,4 +64,15 @@ Rails.application.configure do
 
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
+
+  # config/environments/production.rb
+  # config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.smtp_settings = {
+  #   address: 'in-v3.mailjet.com',
+  #   port: 587,
+  #   user_name: ENV.fetch('MAILJET_API_KEY', nil),
+  #   password: ENV.fetch('MAILJET_SECRET_KEY', nil),
+  #   authentication: :plain,
+  #   enable_starttls_auto: true
+  # }
 end

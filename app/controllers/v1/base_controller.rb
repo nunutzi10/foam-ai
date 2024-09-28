@@ -60,6 +60,17 @@ module V1
       render(nothing: true, status: :unauthorized) if current_api_key.blank?
     end
 
+    # Authenticates the current request for a logged admin or a signed api_key
+    # or user
+    # via knock implementation
+    # @return nil.
+    def authenticate_admin_or_api_key_or_user!
+      return if current_v1_admin.present? || current_v1_user.present?
+
+      authenticate_for ApiKey
+      render(nothing: true, status: :unauthorized) if current_api_key.blank?
+    end
+
     # Validates the request collection and check if page Limit is valid
     # @raise ActiveRecord::BadRequest
     # @return nil

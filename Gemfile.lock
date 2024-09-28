@@ -206,6 +206,11 @@ GEM
       net-imap
       net-pop
       net-smtp
+    mailjet (1.8.0)
+      activesupport (>= 5.0.0)
+      faraday (~> 2.1)
+      rack (>= 1.4.0)
+      yajl-ruby
     marcel (1.0.4)
     method_source (1.1.0)
     mime-types (3.5.2)
@@ -433,6 +438,7 @@ GEM
     wicked_pdf (2.8.1)
       activesupport
     wkhtmltopdf-binary (0.12.6.7)
+    yajl-ruby (1.4.3)
     yard (0.9.36)
     zeitwerk (2.6.17)
 
@@ -458,6 +464,7 @@ DEPENDENCIES
   kaminari (~> 1.2.2)
   knock!
   listen (~> 3.3)
+  mailjet (~> 1.8.0)
   neighbor (~> 0.2.3)
   nokogiri (~> 1.15.5)
   paper_trail (~> 12.1)

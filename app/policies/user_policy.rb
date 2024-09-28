@@ -3,23 +3,23 @@
 # UserPolicy
 class UserPolicy < ApplicationPolicy
   def index?
-    true
+    admin? && user.admin?
   end
 
   def show?
-    true
+    (user.present? && user == @user) || (admin? && user.admin?)
   end
 
   def create?
-    true
+    admin? && user.admin?
   end
 
   def update?
-    user.present? && user == @user
+    (user.present? && user == @user) || (admin? && user.admin?)
   end
 
   def destroy?
-    user.present? && user == @user
+    (user.present? && user == @user) || (admin? && user.admin?)
   end
 
   # Conversation scope

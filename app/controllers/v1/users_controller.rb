@@ -3,7 +3,8 @@
 module V1
   # User API Endpoints
   class UsersController < BaseController
-    before_action :authenticate_v1_user!, only: %i[index show update destroy]
+    before_action :authenticate_admin_or_api_key_or_user!,
+                  only: %i[index show create destroy]
     before_action :find_user!, only: %i[show update destroy]
 
     # retuns a list of users
@@ -48,6 +49,7 @@ module V1
     #     }
     #   }
     def create
+      authorize User
       tenant = Tenant.find params[:tenant_id]
       user = tenant.users.create! create_user_params
       json_response user, :created

@@ -16,8 +16,10 @@ class ApiKey < ApplicationRecord
   # modules
   module Role
     ADMINS = (1 << 0)
+    COMPLETIONS = (1 << 1)
     LIST = [
-      ADMINS
+      ADMINS,
+      COMPLETIONS
     ].freeze
 
     def self.all
