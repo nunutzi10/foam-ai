@@ -121,6 +121,8 @@ gem 'vonage', '~> 7.16.1'
 gem 'people', '~> 0.2.1'
 # convert image to string
 gem 'rtesseract', '~> 3.1.3'
+# emails with mailjet
+gem 'mailjet', '~> 1.8.0'
 
 group :development, :test do
   # use rspec for unit and integration tests

@@ -63,12 +63,12 @@ describe V1::AdminsController do
     end
   end
 
-  xdescribe 'POST /password' do
+  describe 'POST /password' do
     let(:admin) { create :admin, :admin }
     let!(:url) { v1_admin_password_url }
 
     before do
-      admin.update! email: 'nunutzi12@gmail.com'
+      admin.update! email: 'giovanni@guruteconecta.com'
     end
 
     it 'generates a password recovery token for a valid user' do

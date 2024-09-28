@@ -38,7 +38,8 @@ describe V1::UsersController do
     end
   end
 
-  xdescribe 'POST /password' do
+  describe 'POST /password' do
+    let(:user) { create :user }
     let!(:url) { v1_user_password_url }
 
     before do
@@ -52,7 +53,7 @@ describe V1::UsersController do
         .once
         .and_call_original
       VCR.use_cassette(
-        'reset_password_instructions_ses',
+        'reset_password_instructions_ses_user',
         match_requests_on: [:ses_api]
       ) do
         post url, params: { email: user.email }
@@ -80,7 +81,7 @@ describe V1::UsersController do
       # freeze time for expiry validation
       Timecop.freeze(Time.current) do
         VCR.use_cassette(
-          'reset_password_instructions_ses',
+          'reset_password_instructions_ses_user',
           match_requests_on: [:ses_api]
         ) do
           post url, params: { email: user.email }
@@ -101,7 +102,7 @@ describe V1::UsersController do
         reset_password_sent_at: Time.zone.now
       )
       VCR.use_cassette(
-        'reset_password_instructions_ses',
+        'reset_password_instructions_ses_user',
         match_requests_on: [:ses_api]
       ) do
         post url, params: { email: user.email }

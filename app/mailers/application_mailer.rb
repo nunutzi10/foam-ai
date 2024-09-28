@@ -42,7 +42,7 @@ class ApplicationMailer < ActionMailer::Base
   # @return nil
   def set_theme_ui
     @tenant = @resource.tenant
-    @public_name = 'Utoppia'
+    @public_name = 'FoamAi'
     @brand_primary_color = '#060228'
     @brand_secondary_color = '#309DF9'
   end
