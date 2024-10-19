@@ -27,7 +27,9 @@ Rails.application.routes.draw do
     # [User] routes
     resources :users, only: %i[index create show update destroy]
     # [Tenant] routes
-    resources :tenants, only: %i[index show update]
+    resources :tenants, only: %i[index show update] do
+      post 'create_tenant_and_apikey', to: 'tasks#create_tenant_and_apikey'
+    end
     # [ApiKey] routes
     resources :api_keys, only: %i[index show create update destroy]
     # Vonage Webhook routes
