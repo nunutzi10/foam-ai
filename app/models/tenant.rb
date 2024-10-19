@@ -10,6 +10,7 @@ class Tenant < ApplicationRecord
   has_many :api_keys, dependent: :destroy
   has_many :users, dependent: :destroy
   has_many :contacts, dependent: :destroy
+  has_many :bots, dependent: :destroy
   # validations
   validates :name, presence: true
   # custom validations
