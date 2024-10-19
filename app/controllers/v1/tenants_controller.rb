@@ -88,7 +88,7 @@ module V1
       json_response @tenant
     end
 
-    def create_tenant_and_apikey
+    def create
       tenant = Tenant.create!(
         name: "Let's Talk",
         vonage_production: false,
