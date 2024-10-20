@@ -23,27 +23,6 @@ class Tenant < ApplicationRecord
     admins.admin.map(&:email)
   end
 
-  # Creates a Vonage PEM file if it does not exist with the current
-  #   channel's Vonage private key
-  # This is needed for the Vonage gem client to work
-  # @return nil
-  def create_vonage_pem_if_needed!
-    return if File.exist? vonage_pem_path
-
-    vonage_private_key = settings['vonage_private_key']
-    raise 'Vonage private key is missing' if vonage_private_key.blank?
-
-    File.write(vonage_pem_path, vonage_private_key.gsub('\n', "\n"))
-  end
-
-  # Returns the path to the Vonage PEM file for the current [Channel]
-  # @return string
-  def vonage_pem_path
-    @vonage_pem_path ||= lambda do
-      "tmp/#{id}-vonage-pem.key"
-    end.call
-  end
-
   protected
 
   # creates a new [TenantSetting] instance with the current instance's
