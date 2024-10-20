@@ -116,7 +116,7 @@ gem 'wkhtmltopdf-binary', '~> 0.12.6.7'
 # use [htmltoword] for converting HTML to Word documents
 gem 'htmltoword', '~> 1.1.1'
 # Use [vonage] for Whatsapp API
-gem 'vonage', '~> 7.16.1'
+gem 'vonage', '~> 7.24.0'
 # Use [people] for contact name & last_name parsing
 gem 'people', '~> 0.2.1'
 # convert image to string
