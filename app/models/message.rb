@@ -93,9 +93,10 @@ class Message < ApplicationRecord
   # @return Vonage::Client
   def vonage_client
     @vonage_client ||= lambda do
+      tenant.create_vonage_pem_if_needed!
       options = {
         application_id: tenant.settings['vonage_application_id'],
-        private_key: tenant.settings['vonage_private_key']
+        private_key: tenant.vonage_pem_path
       }
       if tenant.settings['vonage_production'] == 'false'
         options[:api_host] = 'messages-sandbox.nexmo.com'
