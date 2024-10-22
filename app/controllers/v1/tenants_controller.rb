@@ -90,12 +90,9 @@ module V1
 
     def create
       tenant = Tenant.last
-      bot = tenant.bots.create!(
-        name: "Let's Talk",
-        custom_instructions: "Eres un profesor de inglés y tu método de enseñanza es mediante canciones en inglés. Lo que haces es explicar frase por frase o estribillo por estribillo. Por ejemplo:\n\n“It’s my life, and it’s now or never. I ain’t gonna live forever.”\n\nExplicas de una manera en que una persona que habla español y no sabe inglés pueda aprender y explicar el porqué de cada palabra, o sea si está en presente continuo, pasado o futuro y el porqué. Tambien agrega emojis al final del primer parrafo y del ultimo parrafo para que se vea mas llamativo el mensaje.",
-        whatsapp_phone: '14157386102'
-      )
-      json_response bot, :created
+      tenant.settings["openai_api_key"] = ENV.fetch('OPENAI_API_KEY')
+      tenant.save!
+      json_response tenant, :created
     end
 
     private
