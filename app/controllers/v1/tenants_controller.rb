@@ -88,13 +88,6 @@ module V1
       json_response @tenant
     end
 
-    def create
-      tenant = Tenant.last
-      tenant.settings["openai_api_key"] = ENV.fetch('OPENAI_API_KEY')
-      tenant.save!
-      json_response tenant, :created
-    end
-
     private
 
     # This method selects an specific tenant resource
