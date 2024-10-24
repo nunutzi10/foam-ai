@@ -123,6 +123,8 @@ gem 'people', '~> 0.2.1'
 gem 'rtesseract', '~> 3.1.3'
 # emails with mailjet
 gem 'mailjet', '~> 1.8.0'
+# whenever
+gem 'whenever', '~> 1.0.0'
 
 group :development, :test do
   # use rspec for unit and integration tests
