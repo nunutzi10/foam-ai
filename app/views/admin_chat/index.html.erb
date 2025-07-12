@@ -1,0 +1,55 @@
+<% content_for(:title, "Seleccionar Bot") %>
+
+<div class="row">
+  <div class="col-12">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>
+        <i class="bi bi-robot text-primary"></i>
+        Bots Disponibles
+      </h2>
+      <small class="text-muted">
+        Tenant: <%= current_admin.tenant.name %>
+      </small>
+    </div>
+
+    <% if @bots.any? %>
+      <div class="row">
+        <% @bots.each do |bot| %>
+          <div class="col-md-6 col-lg-4 mb-4">
+            <%= link_to admin_chat_path(bot), class: "text-decoration-none" do %>
+              <div class="card bot-card h-100">
+                <div class="card-body">
+                  <h5 class="card-title">
+                    <i class="bi bi-chat-dots text-primary"></i>
+                    <%= bot.name %>
+                  </h5>
+                  <p class="card-text text-muted">
+                    <%= truncate(bot.custom_instructions, length: 100) %>
+                  </p>
+                  <small class="text-muted">
+                    <i class="bi bi-calendar"></i>
+                    Creado: <%= bot.created_at.strftime("%d/%m/%Y") %>
+                  </small>
+                </div>
+                <div class="card-footer bg-transparent">
+                  <small class="text-primary">
+                    <i class="bi bi-arrow-right-circle"></i>
+                    Click para chatear
+                  </small>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="text-center py-5">
+        <i class="bi bi-robot text-muted" style="font-size: 4rem;"></i>
+        <h4 class="text-muted mt-3">No hay bots disponibles</h4>
+        <p class="text-muted">
+          No se encontraron bots para el tenant "<%= current_admin.tenant.name %>".
+        </p>
+      </div>
+    <% end %>
+  </div>
+</div>

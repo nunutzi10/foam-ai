@@ -1,0 +1,33 @@
+<% if messages.any? %>
+  <% messages.each do |completion| %>
+    <% if completion.prompt.present? %>
+      <div class="message user">
+        <div class="message-bubble">
+          <strong>Tú:</strong><br>
+          <%= simple_format(completion.prompt) %>
+          <small class="d-block mt-1 opacity-75">
+            <%= completion.created_at.strftime("%H:%M") %>
+          </small>
+        </div>
+      </div>
+    <% end %>
+
+    <% if completion.response.present? %>
+      <div class="message assistant">
+        <div class="message-bubble">
+          <strong><%= bot.name %>:</strong><br>
+          <%= simple_format(completion.response) %>
+          <small class="d-block mt-1 opacity-75">
+            <%= completion.created_at.strftime("%H:%M") %>
+          </small>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+<% else %>
+  <div class="text-center text-muted py-5">
+    <i class="bi bi-chat-square-dots" style="font-size: 3rem;"></i>
+    <h5 class="mt-3">¡Inicia la conversación!</h5>
+    <p>Escribe tu primer mensaje abajo para comenzar a chatear con <%= bot.name %></p>
+  </div>
+<% end %>

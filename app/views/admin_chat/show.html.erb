@@ -1,0 +1,135 @@
+<% content_for(:title, "Chat con #{@bot.name}") %>
+
+<div class="row">
+  <div class="col-12">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3>
+        <i class="bi bi-chat-square-text text-primary"></i>
+        Chatear con <%= @bot.name %>
+      </h3>
+      <%= link_to admin_chat_index_path, class: "btn btn-outline-secondary" do %>
+        <i class="bi bi-arrow-left"></i> Volver a Bots
+      <% end %>
+    </div>
+
+    <div class="card">
+      <div class="card-header bg-light">
+        <small class="text-muted">
+          <strong>Instrucciones del Bot:</strong> 
+          <%= truncate(@bot.custom_instructions, length: 200) %>
+        </small>
+      </div>
+
+      <div class="card-body p-0">
+        <div class="chat-container" id="chatContainer">
+          <div id="messagesContainer">
+            <%= render 'messages', messages: @messages, bot: @bot %>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <%= form_with url: admin_chat_send_message_path(@bot), method: :post, local: true, 
+            id: "messageForm" do |form| %>
+          <div class="input-group">
+            <%= form.text_area :message, class: "form-control", 
+                placeholder: "Escribe tu mensaje aquí...", 
+                rows: 2, required: true, id: "messageInput" %>
+            <button class="btn btn-primary" type="submit" id="sendButton">
+              <i class="bi bi-send"></i>
+              Enviar
+            </button>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="mt-3">
+      <small class="text-muted">
+        <i class="bi bi-info-circle"></i>
+        Los mensajes se actualizan automáticamente. Presiona Ctrl+Enter para enviar.
+      </small>
+    </div>
+  </div>
+</div>
+
+<script>
+  let lastMessageCount = 0;
+  let isTyping = false;
+  let lastActivity = Date.now();
+
+  // Auto-resize textarea
+  const messageInput = document.getElementById('messageInput');
+  messageInput.addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = this.scrollHeight + 'px';
+    isTyping = true;
+    lastActivity = Date.now();
+  });
+
+  // Submit form on Ctrl+Enter
+  messageInput.addEventListener('keydown', function(e) {
+    if (e.ctrlKey && e.key === 'Enter') {
+      document.getElementById('messageForm').submit();
+    }
+  });
+
+  // Track when user stops typing
+  messageInput.addEventListener('blur', function() {
+    isTyping = false;
+  });
+
+  messageInput.addEventListener('focus', function() {
+    lastActivity = Date.now();
+  });
+
+  // Focus on message input when page loads
+  window.addEventListener('load', function() {
+    messageInput.focus();
+    
+    // Count initial messages
+    const messages = document.querySelectorAll('.message');
+    lastMessageCount = messages.length;
+  });
+
+  // Disable send button when form is submitted to prevent double submission
+  document.getElementById('messageForm').addEventListener('submit', function() {
+    const sendButton = document.getElementById('sendButton');
+    sendButton.disabled = true;
+    sendButton.innerHTML = '<i class="bi bi-hourglass-split"></i> Enviando...';
+  });
+
+  // Auto-update messages via AJAX without disrupting user input
+  function updateMessages() {
+    const timeSinceLastActivity = Date.now() - lastActivity;
+    
+    // Only update if user is not actively typing and hasn't been active recently
+    if (!isTyping && !messageInput.matches(':focus') && timeSinceLastActivity > 2000) {
+      fetch('<%= admin_chat_messages_path(@bot) %>')
+        .then(response => response.text())
+        .then(html => {
+          const messagesContainer = document.getElementById('messagesContainer');
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = html;
+          
+          const newMessageCount = tempDiv.querySelectorAll('.message').length;
+          
+          // Only update if there are new messages
+          if (newMessageCount > lastMessageCount) {
+            messagesContainer.innerHTML = html;
+            lastMessageCount = newMessageCount;
+            
+            // Auto-scroll to bottom
+            const chatContainer = document.getElementById('chatContainer');
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+          }
+        })
+        .catch(error => {
+          console.log('Error updating messages:', error);
+        });
+    }
+  }
+
+  // Update messages every 3 seconds
+  setInterval(updateMessages, 3000);
+</script>
