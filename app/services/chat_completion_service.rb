@@ -19,7 +19,7 @@ class ChatCompletionService < ApplicationService
   def find_bot!
     self.bot = Bot.find(bot_id)
   rescue ActiveRecord::RecordNotFound
-    raise ArgumentError, 'Bot no encontrado'
+    raise ArgumentError.new('Bot no encontrado')
   end
 
   def create_completion!

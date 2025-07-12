@@ -2,17 +2,17 @@
 
 # [AdminChatController] definition
 # Controller for admin chat functionality
-class AdminChatController < ActionController::Base
+class AdminChatController < ApplicationController
   layout 'admin_chat'
   protect_from_forgery with: :exception
-  
-  before_action :authenticate_admin!, except: [:login, :authenticate, :logout]
-  before_action :set_bot, only: [:show, :send_message, :messages]
+
+  before_action :authenticate_admin!, except: %i[login authenticate logout]
+  before_action :set_bot, only: %i[show send_message messages]
 
   # GET /admin_chat
   def index
     return unless authenticate_admin!
-    
+
     @bots = current_admin.tenant.bots.includes(:tenant)
   end
 
@@ -30,7 +30,7 @@ class AdminChatController < ActionController::Base
                     .where('prompt IS NOT NULL OR response IS NOT NULL')
                     .order(created_at: :asc)
                     .limit(50)
-    
+
     render partial: 'messages', locals: { messages: @messages, bot: @bot }
   end
 
@@ -39,7 +39,8 @@ class AdminChatController < ActionController::Base
     message_text = params[:message]&.strip
 
     if message_text.blank?
-      redirect_to admin_chat_path(@bot), alert: 'El mensaje no puede estar vacío'
+      redirect_to admin_chat_path(@bot),
+                  alert: 'El mensaje no puede estar vacío'
       return
     end
 
@@ -49,9 +50,9 @@ class AdminChatController < ActionController::Base
         bot_id: @bot.id,
         user_message: message_text
       )
-      
+
       service.call!
-      
+
       redirect_to admin_chat_path(@bot), notice: 'Mensaje enviado correctamente'
     rescue StandardError => e
       Rails.logger.error "Error creating completion: #{e.message}"
@@ -61,9 +62,9 @@ class AdminChatController < ActionController::Base
 
   # GET /admin_chat/login
   def login
-    if current_admin
-      redirect_to admin_chat_index_path
-    end
+    return unless current_admin
+
+    redirect_to admin_chat_index_path
   end
 
   # POST /admin_chat/authenticate
@@ -71,8 +72,8 @@ class AdminChatController < ActionController::Base
     email = params[:email]
     password = params[:password]
 
-    admin = Admin.find_by(email: email)
-    
+    admin = Admin.find_by(email:)
+
     if admin&.valid_password?(password)
       session[:admin_id] = admin.id
       redirect_to admin_chat_index_path, notice: 'Autenticación exitosa'
@@ -90,9 +91,11 @@ class AdminChatController < ActionController::Base
   private
 
   def current_admin
-    @current_admin ||= Admin.find_by(id: session[:admin_id]) if session[:admin_id]
+    return unless session[:admin_id]
+
+    @current_admin ||= Admin.find_by(id: session[:admin_id])
   end
-  
+
   helper_method :current_admin
 
   def set_bot
