@@ -177,12 +177,7 @@ Once your server is running, you can interact with these endpoints:
 
 ## 🚢 Deployment Options
 
-### Option 1: Docker (Easiest)
-```bash
-./demo_docker.sh
-```
-
-### Option 2: Traditional Deployment
+### Option 1: Traditional Deployment
 The application is configured for deployment on platforms like:
 - Render
 - Heroku  
@@ -194,7 +189,7 @@ The application is configured for deployment on platforms like:
 Run the test suite:
 ```bash
 # Run all tests
-rake parallel:spec
+rspec spec
 
 # Run specific test file
 rspec spec/models/bot_spec.rb
