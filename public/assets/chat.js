@@ -20,6 +20,12 @@ class ChatApp {
         this.settingsModal = document.getElementById('settings-modal');
         this.apiKeyInput = document.getElementById('api-key-input');
         this.botIdInput = document.getElementById('bot-id-input');
+        
+        // New configuration display elements
+        this.configDisplay = document.getElementById('config-display');
+        this.configEdit = document.getElementById('config-edit');
+        this.apiKeyDisplay = document.getElementById('api-key-display');
+        this.botIdDisplay = document.getElementById('bot-id-display');
     }
 
     setupEventListeners() {
@@ -34,12 +40,21 @@ class ChatApp {
             this.createNewConversation();
         });
 
-        // Settings
+        // Settings - Edit mode
         document.getElementById('save-settings').addEventListener('click', () => {
             this.saveSettings();
         });
 
-        document.getElementById('cancel-settings').addEventListener('click', () => {
+        document.getElementById('cancel-settings-edit').addEventListener('click', () => {
+            this.cancelEditSettings();
+        });
+
+        // Settings - Display mode
+        document.getElementById('edit-settings').addEventListener('click', () => {
+            this.enterEditMode();
+        });
+
+        document.getElementById('cancel-settings-display').addEventListener('click', () => {
             this.hideSettings();
         });
     }
@@ -49,16 +64,73 @@ class ChatApp {
             this.enableChat();
             this.loadConversations();
             this.currentBotSpan.textContent = `ID: ${this.botId}`;
+            this.updateStatusIndicator(true, 'Configurado');
         } else {
+            this.updateStatusIndicator(false, 'Sin configurar');
             this.showSettings();
+        }
+    }
+
+    updateStatusIndicator(isConfigured, text) {
+        const indicator = document.getElementById('status-indicator');
+        const statusText = document.getElementById('status-text');
+        
+        if (isConfigured) {
+            indicator.className = 'w-2 h-2 bg-green-500 rounded-full mr-1';
+            statusText.textContent = text;
+        } else {
+            indicator.className = 'w-2 h-2 bg-red-500 rounded-full mr-1';
+            statusText.textContent = text;
         }
     }
 
     showSettings() {
         this.settingsModal.classList.remove('hidden');
         this.settingsModal.classList.add('flex');
+        
+        // Check if we have saved configuration
+        if (this.apiKey && this.botId) {
+            this.showDisplayMode();
+        } else {
+            this.showEditMode();
+        }
+    }
+
+    showDisplayMode() {
+        this.configDisplay.classList.remove('hidden');
+        this.configEdit.classList.add('hidden');
+        
+        // Update display values
+        this.apiKeyDisplay.textContent = this.apiKey ? this.maskApiKey(this.apiKey) : 'No configurada';
+        this.botIdDisplay.textContent = this.botId || 'No configurado';
+    }
+
+    showEditMode() {
+        this.configDisplay.classList.add('hidden');
+        this.configEdit.classList.remove('hidden');
+        
+        // Populate current values
         this.apiKeyInput.value = this.apiKey;
         this.botIdInput.value = this.botId;
+        
+        // Focus on first empty field
+        if (!this.apiKey) {
+            this.apiKeyInput.focus();
+        } else if (!this.botId) {
+            this.botIdInput.focus();
+        }
+    }
+
+    enterEditMode() {
+        this.showEditMode();
+    }
+
+    cancelEditSettings() {
+        if (this.apiKey && this.botId) {
+            this.showDisplayMode();
+        } else {
+            this.hideSettings();
+        }
     }
 
     hideSettings() {
@@ -66,25 +138,47 @@ class ChatApp {
         this.settingsModal.classList.remove('flex');
     }
 
-    saveSettings() {
-        this.apiKey = this.apiKeyInput.value.trim();
-        this.botId = this.botIdInput.value.trim();
+    maskApiKey(apiKey) {
+        if (!apiKey || apiKey.length < 8) return apiKey;
+        const start = apiKey.substring(0, 4);
+        const end = apiKey.substring(apiKey.length - 4);
+        const middle = '*'.repeat(Math.min(apiKey.length - 8, 20));
+        return `${start}${middle}${end}`;
+    }
 
-        if (!this.apiKey || !this.botId) {
+    saveSettings() {
+        const newApiKey = this.apiKeyInput.value.trim();
+        const newBotId = this.botIdInput.value.trim();
+
+        if (!newApiKey || !newBotId) {
             alert('Por favor, completa todos los campos');
             return;
         }
 
+        // Save the values
+        this.apiKey = newApiKey;
+        this.botId = newBotId;
+
         localStorage.setItem('chat_api_key', this.apiKey);
         localStorage.setItem('chat_bot_id', this.botId);
 
-        this.hideSettings();
+        // Show success and switch to display mode
+        this.showDisplayMode();
         this.enableChat();
         this.loadConversations();
         this.currentBotSpan.textContent = `ID: ${this.botId}`;
+        this.updateStatusIndicator(true, 'Configurado');
         
-        // Clear welcome message
-        this.messagesContainer.innerHTML = '';
+        // Clear welcome message if exists
+        if (this.messagesContainer.children.length === 1 && 
+            this.messagesContainer.firstElementChild.classList.contains('text-center')) {
+            this.messagesContainer.innerHTML = '';
+        }
+
+        // Show success message
+        setTimeout(() => {
+            this.hideSettings();
+        }, 1000);
     }
 
     enableChat() {

@@ -18,8 +18,12 @@ class ChatController < ActionController::Base
 
   # Send a message to the bot
   def send_message
-    if params[:conversation_id].blank?
+    conversation_id = params[:conversation_id]
+
+    # If no conversation_id provided, create a new one if auto_create is enabled
+    if conversation_id.blank?
       conversation = find_or_create_conversation
+      conversation_id = conversation&.id
     end
 
     completion = CreateCompletionService.call!(
@@ -27,7 +31,7 @@ class ChatController < ActionController::Base
                                                  completion: {
                                                    prompt: params[:message],
                                                    bot_id: @bot.id,
-                                                   conversation_id: conversation&.id || params[:conversation_id]
+                                                   conversation_id:
                                                  }
                                                })
     )
@@ -48,7 +52,8 @@ class ChatController < ActionController::Base
   # Create a new conversation
   def create_conversation
     conversation = @bot.conversations.create!(
-      title: params[:title] || "Conversación #{Time.current.strftime('%d/%m/%Y %H:%M')}"
+      title: params[:title] ||
+             "Conversación #{Time.current.strftime('%d/%m/%Y %H:%M')}"
     )
 
     render json: {
@@ -69,7 +74,8 @@ class ChatController < ActionController::Base
   # Get conversation history
   # Get conversation history
   def conversation_history
-    Rails.logger.info "Loading history for conversation_id: #{params[:conversation_id]}"
+    Rails.logger.info 'Loading history for conversation_id: ' \
+                      "#{params[:conversation_id]}"
     Rails.logger.info "Bot: #{@bot&.id}, Tenant: #{@api_key_record&.tenant&.id}"
 
     # Find conversation that belongs to the current bot
@@ -135,7 +141,8 @@ class ChatController < ActionController::Base
   private
 
   def authenticate_api_key!
-    api_key = request.headers['Authorization']&.gsub('Bearer ', '') || params[:api_key]
+    api_key = request.headers['Authorization']&.gsub('Bearer ', '') ||
+              params[:api_key]
 
     if api_key.blank?
       render json: { error: 'API Key requerida' }, status: :unauthorized
