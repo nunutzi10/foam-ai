@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_08_31_191750) do
+ActiveRecord::Schema[7.0].define(version: 2025_07_19_202345) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "unaccent"
@@ -74,7 +74,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_08_31_191750) do
     t.json "metadata"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "conversation_id"
     t.index ["bot_id"], name: "index_completions_on_bot_id"
+    t.index ["conversation_id"], name: "index_completions_on_conversation_id"
   end
 
   create_table "contacts", force: :cascade do |t|
@@ -86,6 +88,14 @@ ActiveRecord::Schema[7.0].define(version: 2024_08_31_191750) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["tenant_id"], name: "index_contacts_on_tenant_id"
+  end
+
+  create_table "conversations", force: :cascade do |t|
+    t.string "title"
+    t.bigint "bot_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bot_id"], name: "index_conversations_on_bot_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -141,7 +151,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_08_31_191750) do
   add_foreign_key "admins", "tenants"
   add_foreign_key "bots", "tenants"
   add_foreign_key "completions", "bots"
+  add_foreign_key "completions", "conversations"
   add_foreign_key "contacts", "tenants"
+  add_foreign_key "conversations", "bots"
   add_foreign_key "messages", "contacts"
   add_foreign_key "users", "tenants"
 end

@@ -8,6 +8,7 @@ class Completion < ApplicationRecord
   include Tenantable
   # associations
   belongs_to :bot
+  belongs_to :conversation, optional: true
   # delegations
   delegate :tenant, to: :bot
   # validations
@@ -74,8 +75,10 @@ class Completion < ApplicationRecord
   # @return nil
   def create_openai_completion!(messages = nil)
     create_full_prompt!
+    # Use conversation context if available, otherwise use provided messages
+    context_messages = conversation&.context_messages || messages
     http_response = openai_client.chat(
-      parameters: openai_parameters(messages)
+      parameters: openai_parameters(context_messages)
     )
     response = http_response.dig('choices', 0, 'message', 'content')
     update!(
@@ -97,13 +100,16 @@ class Completion < ApplicationRecord
       full_prompt.present?
 
     if recent_messages.present?
-      recent_messages.map do |message|
+      recent_messages.each do |message|
+        # Skip messages with blank content to avoid OpenAI errors
+        next if message.body.blank?
+
         messages << if message.user?
                       { role: 'user', content: message.body }
                     else
-                      { role: 'system', content: message.body }
+                      { role: 'assistant', content: message.body }
                     end
-      end.join("\n")
+      end
     end
 
     messages << { role: 'user', content: user_prompt } if user_prompt.present?

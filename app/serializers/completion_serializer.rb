@@ -3,6 +3,7 @@
 # [CompletionSerializer]
 class CompletionSerializer < ApplicationSerializer
   attributes :bot_id,
+             :conversation_id,
              :status,
              :prompt,
              :full_prompt,
