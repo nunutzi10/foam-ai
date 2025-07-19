@@ -224,14 +224,6 @@ rubocop
 
 This project is available as open source under the terms of the MIT License.
 
-## 🆘 Need Help?
-
-- **Issues**: Check the [Issues](https://github.com/your-username/foam-ai/issues) page
-- **Documentation**: See `DEMO_README.md` for detailed setup instructions
-- **Contact**: Reach out through GitHub issues for support
-
----
-
 **Made with ❤️ for the Giovanni**
 
 Ready to build your first AI chatbot? Run `./setup_demo.sh` and start chatting! 🚀
