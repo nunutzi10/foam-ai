@@ -7,5 +7,9 @@ FactoryBot.define do
     prompt { Faker::Lorem.sentence }
 
     bot
+
+    trait :with_conversation do
+      conversation
+    end
   end
 end

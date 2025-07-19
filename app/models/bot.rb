@@ -11,6 +11,7 @@ class Bot < ApplicationRecord
   # associations
   belongs_to :tenant
   has_many :completions, dependent: :destroy
+  has_many :conversations, dependent: :destroy
   # validations
   validates :name, :custom_instructions, presence: true
   validates :name, uniqueness: { scope: :tenant_id }

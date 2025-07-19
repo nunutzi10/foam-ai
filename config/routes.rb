@@ -37,5 +37,7 @@ Rails.application.routes.draw do
     end
     # [Completion] routes
     resources :completions, only: %i[index show create]
+    # [Conversation] routes
+    resources :conversations, only: %i[index show create update destroy]
   end
 end
