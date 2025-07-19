@@ -153,7 +153,10 @@ class ChatController < ActionController::Base
 
     return if @api_key_record&.authorized?(ApiKey::Role::COMPLETIONS)
 
-    render json: { error: 'API Key inválida o sin permisos' },
+    error_message = 'API Key inválida o sin permisos.
+    Configurala en el icono de configuración'
+
+    render json: { error: error_message },
            status: :unauthorized
   end
 
