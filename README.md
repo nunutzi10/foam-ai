@@ -1,213 +1,237 @@
-# Foam API
+# 🤖 FoamAI - Custom AI Chatbot Platform
 
-Foam API based on RoR. For better results, this application should be developed and deployed under a Unix environment.
+FoamAI is a simple yet powerful platform that allows you to create custom AI chatbots with personalized instructions. You can build bots with specific personalities, knowledge, and behaviors, then chat with them through a clean web interface.
 
-## Prerequisites
+## ✨ What does this project do?
 
-You will need the following things properly installed on your computer. The recommended way of running this application is via Ruby installed with `rvm`.
+- **Create Custom Bots**: Build AI chatbots with custom instructions and personalities
+- **Chat Interface**: Simple web interface to interact with your bots
+- **Multi-tenant Support**: Multiple organizations can have their own bots and users
+- **API Integration**: Uses OpenAI's GPT models for intelligent conversations
+- **WhatsApp Integration**: Connect your bots to WhatsApp for broader reach
 
-- [RVM](http://rvm.io/)
-- [Git](https://git-scm.com/)
-- [PostgreSQL](https://www.postgresql.org/)
+Perfect for:
+- Building customer support bots
+- Creating educational assistants  
+- Developing entertainment chatbots
+- Prototyping conversational AI ideas
 
-## Installation
+## 🚀 Quick Demo (Recommended)
 
-- `git clone <repository-url>` this repository
-- `cd api`
-- `bundle install`
-- `bundle exec rake db:setup`
-
-## Setting up the dev environment
-
-- Create a new file called `.env` in the root directory of the application based on `.env.sample`. Fill out the appropriate secrets before running the ruby server daemon.
-
-```
-FOAM_AI_DATABASE_USERNAME=
-FOAM_AI_DATABASE_PASSWORD=
-FOAM_AI_DATABASE_HOST=
-FOAM_AI_DATABASE=
-...
-```
-
-- Install Rails dependencias, via `bundle command`.
+The easiest way to try FoamAI is using our automated setup script:
 
 ```bash
+./setup_demo.sh
+```
+
+This script will:
+1. Install all dependencies
+2. Set up the database
+3. Create a demo bot named "Let's Talk" 
+4. Generate API credentials
+5. Start the server at `http://localhost:3000/chat.html`
+
+**That's it!** You'll be chatting with your bot in under 2 minutes.
+
+## 🛠️ Manual Setup (Step by Step)
+
+If you prefer to set up everything manually or want to understand the process:
+
+### Prerequisites
+
+- **Ruby 3.1.2** (we recommend using [RVM](http://rvm.io/))
+- **PostgreSQL** database
+- **Git**
+- **OpenAI API Key** (get one at [OpenAI Platform](https://platform.openai.com/))
+
+### Step 1: Clone and Install Dependencies
+
+```bash
+git clone <repository-url>
+cd foam-ai
 bundle install
 ```
 
-- Setup `development` and `test` db.
+### Step 2: Configure Environment Variables
+
+Create a `.env` file in the root directory:
 
 ```bash
-bundle exec rails db:setup
+# Database Configuration
+DATABASE_URL=postgresql://username:password@localhost/foam_ai_development
+
+# OpenAI Configuration  
+OPENAI_API_KEY=your_openai_api_key_here
+
+# Optional: Other configurations
+RAILS_ENV=development
 ```
 
-## Setup TextExtractor
-
-Install `text-extractor` lib dependencies:
-
-- pdftotext
-- unrtf
-- tesseract
-- catdoc [Mac](https://apple.stackexchange.com/a/294259)
-- xls2csv
-- catppt
-
-MacOS:
+### Step 3: Set Up Database
 
 ```bash
-brew install poppler
-brew install unrtf
-brew install tesseract
-brew install --build-from-source catdoc.rb
+rails db:create
+rails db:migrate
+rails db:seed  # Optional: if you have seed data
 ```
 
-Debian/Ubuntu:
+### Step 4: Create Demo Data
+
+Open Rails console and run these commands:
+
+```ruby
+# Create a tenant (organization)
+tenant = FactoryBot.create(:tenant)
+
+# Create API key with full permissions
+api_key = FactoryBot.create(:api_key, tenant: tenant, role: ApiKey::Role.all)
+
+# Create your first bot
+bot = FactoryBot.create(:bot, 
+  custom_instructions: "Solo responde al usuario.", 
+  name: "Let's Talk", 
+  whatsapp_phone: "14157386102", 
+  tenant: tenant
+)
+
+# Display your credentials
+puts "API Key: #{api_key.api_key}"
+puts "Bot ID: #{bot.id}"
+puts "Tenant ID: #{tenant.id}"
+```
+
+### Step 5: Start the Server
 
 ```bash
-sudo apt install poppler-utils
-sudo apt install unrtf
-sudo apt install catdoc
-sudo apt install tesseract-ocr
-...
+rails server
 ```
 
-Create symlinks to the `bin` files point to `/usr/bin`. Eg:
+Visit `http://localhost:3000/chat.html` and use your generated credentials to start chatting!
 
-MacOS:
+## 🔧 Technologies Used
 
+This project is built with modern, reliable technologies:
+
+### Backend
+- **Ruby on Rails 7.0.6** - Web application framework
+- **Ruby 3.1.2** - Programming language
+- **PostgreSQL** - Primary database
+- **Puma** - Web server
+
+### AI & External Services
+- **OpenAI API** - GPT models for intelligent conversations
+- **ruby-openai gem** - Ruby client for OpenAI API
+- **Vonage** - SMS/WhatsApp integration
+
+### Background Processing & Caching
+- **Sidekiq** - Background job processing
+- **Redis** - Caching and job queue
+
+### Authentication & Authorization
+- **Knock** - JWT-based API authentication
+- **Pundit** - Authorization policies
+
+### Development & Testing
+- **RSpec** - Testing framework
+- **FactoryBot** - Test data generation
+- **Parallel Tests** - Faster test execution
+- **RuboCop** - Code style checking
+
+### Monitoring & Utilities
+- **Airbrake** - Error monitoring
+- **Paper Trail** - Model versioning
+- **Chronic** - Natural language date parsing
+
+## 📁 Project Structure
+
+```
+app/
+├── controllers/     # API endpoints and request handling
+├── models/         # Data models (Tenant, Bot, Message, etc.)
+├── services/       # Business logic and external API calls
+├── jobs/           # Background job processing
+├── policies/       # Authorization rules
+└── serializers/    # JSON response formatting
+
+config/             # Application configuration
+db/                # Database migrations and schema
+spec/              # Test files and factories
+```
+
+## 🤔 How It Works
+
+1. **Tenants**: Organizations that can have multiple bots and users
+2. **Bots**: AI assistants with custom instructions and personalities  
+3. **Conversations**: Chat sessions between users and bots
+4. **Messages**: Individual messages within conversations
+5. **API Keys**: Secure authentication for API access
+
+## 🌐 API Endpoints
+
+Once your server is running, you can interact with these endpoints:
+
+- `POST /api/v1/conversations` - Start a new conversation
+- `POST /api/v1/conversations/:id/messages` - Send a message
+- `GET /api/v1/conversations` - List conversations
+- `GET /api/v1/bots` - List available bots
+
+## 🚢 Deployment Options
+
+### Option 1: Docker (Easiest)
 ```bash
-sudo ln -s /opt/homebrew/bin/catdoc /usr/local/bin/catdoc
-sudo ln -s /opt/homebrew/bin/catppt /usr/local/bin/catppt
-sudo ln -s /opt/homebrew/bin/xls2csv /usr/local/bin/xls2csv
-sudo ln -s /opt/homebrew/bin/pdftotext /usr/local/bin/pdftotext
-sudo ln -s /opt/homebrew/bin/unrtf /usr/local/bin/unrtf
-sudo ln -s /opt/homebrew/bin/tesseract /usr/local/bin/tesseract
+./demo_docker.sh
 ```
 
-Debian/Ubuntu:
+### Option 2: Traditional Deployment
+The application is configured for deployment on platforms like:
+- Render
+- Heroku  
+- AWS
+- DigitalOcean
 
+## 🧪 Testing
+
+Run the test suite:
 ```bash
-sudo ln -s /usr/bin/catdoc /usr/local/bin/catdoc
-sudo ln -s /usr/bin/catppt /usr/local/bin/catppt
-sudo ln -s /usr/bin/pdftotext /usr/local/bin/pdftotext
-sudo ln -s /usr/bin/unrtf /usr/local/bin/unrtf
-sudo ln -s /usr/bin/tesseract /usr/local/bin/tesseract
-sudo ln -s /usr/bin/xls2csv /usr/local/bin/xls2csv
+# Run all tests
+rake parallel:spec
+
+# Run specific test file
+rspec spec/models/bot_spec.rb
+
+# Check code style
+rubocop
 ```
 
-## Running / Development
+## 📈 Monitoring & Maintenance
 
-- `rails s`
-- Visit your app at [http://localhost:3000](http://localhost:3000).
+- **Health Checks**: Visit `/health` endpoint
+- **Background Jobs**: Monitor Sidekiq dashboard
+- **Logs**: Check `log/production.log` for application logs
+- **Database**: Regular backups recommended for production
 
-### Sidekiq
+## 🤝 Contributing
 
-This app uses `sidekiq` for background jobs. To start the sidekiq daemon, run the following command:
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Run tests (`rake parallel:spec`)
+5. Commit your changes (`git commit -m 'Add amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
 
-```bash
-bundle exec sidekiq
-```
+## 📝 License
 
-## Testing
+This project is available as open source under the terms of the MIT License.
 
-This application uses `rspec` and `parallel_tests` for unit and integration testing.
+## 🆘 Need Help?
 
-ParallelTests uses 1 database per test-process, add the following to your `.env` file with the number of parallel tests to be performed:
+- **Issues**: Check the [Issues](https://github.com/your-username/foam-ai/issues) page
+- **Documentation**: See `DEMO_README.md` for detailed setup instructions
+- **Contact**: Reach out through GitHub issues for support
 
-```sh
-# ParallelTests
-TEST_ENV_NUMBER=2
-```
+---
 
-Create additional database(s)
+**Made with ❤️ for the Giovanni**
 
-```sh
-rake parallel:setup
-```
-
-Before you commit your changes, make sure you've tested everything with the following commands:
-
-- `rake parallel:spec`
-
-## Lint
-
-This application uses `rubocop` for ruby style checking.
-
-- `rubocop`
-
-## ERD
-
-This application uses `rails-erd` for ruby style checking.
-
-- `bundle exec erd`
-
-# Unix Libs
-
-This application uses GNU's `sed` and `psql` binaries to sync DID libs. Install `gnu-sed` and `psql` client via homebrew or other package manager.
-
-For mac os x, follow this link:
-
-- [SED](https://formulae.brew.sh/formula/gnu-sed)
-
-Once the binaries are installed, get their path using `which` cmd. Configure ENV vars with its output.
-
-```bash
-which sed
-# => ENV['SED_BIN']=/bin/sed
-which psql
-# => ENV['PSQL_BIN']=/usr/local/bin/psql
-```
-
-## Stage
-
-### .env
-
-Add the following:
-
-```sh
-# Docker
-WORKER_PROCESSES=1
-LISTEN_ON=0.0.0.0:9010
-# Database credentials
-COMPARTCARGA_HOST=postgres
-COMPARTCARGA_USERNAME=gitlab
-```
-
-### Deploy
-
-```sh
-git pull
-docker-compose down
-sudo chown -R $USER:$USER tmp/
-```
-
-Password prompt.
-
-```sh
-docker-compose build
-docker-compose up -d
-docker-compose run internet-web rake db:migrate
-```
-
-#### Stage Deploy
-
-**Stage:**
-
-- `bundle exec cap stage deploy`
-- API is available at `https://chato.api-stage.koonolmexico.com`
-
-# Docs
-
-Use `yard` to generate docs.
-
-1. Install yard
-
-```bash
-gem install yard
-```
-
-2. Generate Doc
-
-```bash
-yardoc 'app/controllers/**/*.rb'
-```
+Ready to build your first AI chatbot? Run `./setup_demo.sh` and start chatting! 🚀

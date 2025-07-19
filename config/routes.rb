@@ -4,6 +4,14 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   # [Healthcheck] gem routes
   Healthcheck.routes(self)
+
+  # Chat web interface routes
+  get 'chat', to: 'chat#index'
+  post 'chat/send_message', to: 'chat#send_message'
+  post 'chat/create_conversation', to: 'chat#create_conversation'
+  get 'chat/conversation_history', to: 'chat#conversation_history'
+  get 'chat/conversations', to: 'chat#conversations'
+
   api_version(
     module: 'V1',
     path: { value: 'v1' },
